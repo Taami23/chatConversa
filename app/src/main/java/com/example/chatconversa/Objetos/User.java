@@ -1,4 +1,4 @@
-package com.example.chatconversa.Activities;
+package com.example.chatconversa.Objetos;
 
 public class User {
     private Integer id;

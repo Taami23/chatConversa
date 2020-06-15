@@ -1,10 +1,12 @@
-package com.example.chatconversa;
+package com.example.chatconversa.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class activity_login extends AppCompatActivity {
+import com.example.chatconversa.R;
+
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

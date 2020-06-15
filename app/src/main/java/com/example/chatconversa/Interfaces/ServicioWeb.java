@@ -1,4 +1,7 @@
-package com.example.chatconversa.Activities;
+package com.example.chatconversa.Interfaces;
+
+import com.example.chatconversa.Respuestas.RespuestaWSLogin;
+import com.example.chatconversa.Respuestas.RespuestaWSRegister;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

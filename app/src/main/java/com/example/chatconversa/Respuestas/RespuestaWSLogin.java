@@ -1,15 +1,22 @@
-package com.example.chatconversa.Activities;
+package com.example.chatconversa.Respuestas;
 
-public class RespuestaWSRegister {
+import com.example.chatconversa.Objetos.User;
+
+public class RespuestaWSLogin {
     private Integer status_code;
     private String message;
+    private String token;
     private User data;
+
+    public RespuestaWSLogin() {
+    }
 
     @Override
     public String toString() {
-        return "RespuestaWSRegister{" +
+        return "RespuestaWSLogin{" +
                 "status_code=" + status_code +
                 ", message='" + message + '\'' +
+                ", token='" + token + '\'' +
                 ", data=" + data +
                 '}';
     }
@@ -30,6 +37,14 @@ public class RespuestaWSRegister {
         this.message = message;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public User getData() {
         return data;
     }
@@ -38,12 +53,10 @@ public class RespuestaWSRegister {
         this.data = data;
     }
 
-    public RespuestaWSRegister(Integer status_code, String message, User data) {
+    public RespuestaWSLogin(Integer status_code, String message, String token, User data) {
         this.status_code = status_code;
         this.message = message;
+        this.token = token;
         this.data = data;
-    }
-
-    public RespuestaWSRegister() {
     }
 }
