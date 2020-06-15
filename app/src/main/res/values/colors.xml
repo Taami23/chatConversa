@@ -143,4 +143,10 @@
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
+    <color name="Amarillito">#E9E33D</color>
+    <color name="VerdeOscurito">#00241b</color>
+    <color name="VerdeClarito">#65B891</color>
+    <color name="Gris">#777370</color>
+    <color name="VerdeMedio">#173830</color>
+
 </resources>
