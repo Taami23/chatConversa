@@ -58,7 +58,7 @@
             android:id="@+id/passwordL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingrese su nombre de usuario"
+            android:hint="Ingrese su password"
             android:layout_marginTop="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -78,6 +78,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/iniciarL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Iniciar Sesión"
@@ -115,7 +116,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/textButton"
+                android:id="@+id/registrarL"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
