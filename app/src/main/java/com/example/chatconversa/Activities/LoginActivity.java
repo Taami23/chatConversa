@@ -31,6 +31,9 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     private TextInputLayout passwordL;
     private ServicioWeb servicioWeb;
     private static String uniqueID = null;
+    private static String elToken = null;
+    private static Integer elId = null;
+    private static String userName = null;
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
 
     @Override
@@ -58,19 +61,41 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
             @Override
             public void onResponse(Call<RespuestaWSLogin> call, Response<RespuestaWSLogin> response) {
                 if (response != null){
-                    if (response.body() != null && response.code()==201){
+                    if (response.body() != null && response.code()==200){
                         RespuestaWSLogin respuestaWSLogin = response.body();
-                        Log.d("Retrofit", "Inicio exitoso");
+                        Log.d("Retrofit", "Sesión Iniciada");
+                        Log.d("Retrofit", respuestaWSLogin.toString());
+                        //Envía la respuesta del login
+                        savePreferences(respuestaWSLogin);
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<RespuestaWSLogin> call, Throwable t) {
 
             }
         });
     }
+
+    //Guarda las preferencias
+    public void savePreferences(RespuestaWSLogin respuestaWSLogin){
+        SharedPreferences preferences = getSharedPreferences("credenciales",
+                Context.MODE_PRIVATE);
+
+        //Extrae las preferencias requeridas desde
+        //la respuesta del login
+        elToken = respuestaWSLogin.getToken();
+        elId = respuestaWSLogin.getData().getId();
+        userName = respuestaWSLogin.getData().getUsername();
+
+        //Guarda y comitea las preferencias
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("token", elToken);
+        editor.putString("id", elId.toString());
+        editor.putString("username", userName);
+        editor.commit();
+    }
+
     public synchronized static String id(Context context) {
         if (uniqueID == null) {
             SharedPreferences sharedPrefs = context.getSharedPreferences(
