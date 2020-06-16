@@ -2,6 +2,8 @@ package com.example.chatconversa.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 import com.example.chatconversa.Interfaces.ServicioWeb;
 import com.example.chatconversa.R;
 import com.example.chatconversa.Respuestas.RespuestaWSRegister;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -83,14 +86,34 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
                     Log.d("Retrofit", "Error: "+response.code());
                     if (response.body() != null && response.code()==201){
                         RespuestaWSRegister respuestaWSRegister = response.body();
-                        Log.d("Retrofit", "Registro exitoso");
+                        Log.d("Retrofit", respuestaWSRegister.getMessage());
                         Log.d("Retrofit", respuestaWSRegister.toString());
+                        new MaterialAlertDialogBuilder(RegistrarActivity.this)
+                                .setTitle("Titulo")
+                                .setMessage(respuestaWSRegister.getMessage())
+                                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        initInicio();
+                                    }
+                                })
+                                .show();
                     }else if (response.code()==400){
-
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
                             JSONObject error = jObjError.getJSONObject("errors");
+                            String mensaje = jObjError.getString("message");
+                            //String mensa = response.body().getMessage().toString();
                             JSONArray names = error.names();
+                            new MaterialAlertDialogBuilder(RegistrarActivity.this)
+                                    .setTitle("Upps! Ha ocurrido un error")
+                                    .setMessage(mensaje)
+                                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    })
+                                    .show();
                             for (int i = 0; i < names.length(); i++) {
                                 String nombreError = names.getString(i);
                                 String message = error.getJSONArray(names.getString(i)).getString(0);
@@ -124,6 +147,22 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
                         }
                         //Log.d("Error 400", response.toString());
                         //Log.d("Error 400", response.errorBody().toString());
+                    }else if(response.code()==401){
+                        try{
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            String mensaje = jObjError.getString("message");
+                            new MaterialAlertDialogBuilder(RegistrarActivity.this)
+                                    .setTitle("Upps! Ha ocurrido un error")
+                                    .setMessage(mensaje)
+                                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    })
+                                    .show();
+                        }catch (JSONException | IOException e){
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -133,5 +172,10 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
 
             }
         });
+    }
+    private void initInicio(){
+        Intent login  = new Intent (this, LoginActivity.class);
+        startActivity(login);
+        finish();
     }
 }
