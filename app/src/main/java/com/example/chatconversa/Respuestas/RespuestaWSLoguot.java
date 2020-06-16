@@ -1,38 +1,38 @@
 package com.example.chatconversa.Respuestas;
 
 public class RespuestaWSLoguot {
-    private Integer user_id;
-    private String username;
+    private Integer status_code;
+    private String message;
+
+    public RespuestaWSLoguot() {
+    }
+
+    public RespuestaWSLoguot(Integer status_code, String message) {
+        this.status_code = status_code;
+        this.message = message;
+    }
+
+    public Integer getStatus_code() {
+        return status_code;
+    }
+
+    public void setStatus_code(Integer status_code) {
+        this.status_code = status_code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     @Override
     public String toString() {
         return "RespuestaWSLoguot{" +
-                "user_id=" + user_id +
-                ", username='" + username + '\'' +
+                "status_code=" + status_code +
+                ", message='" + message + '\'' +
                 '}';
-    }
-
-    public Integer getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public RespuestaWSLoguot(Integer user_id, String username) {
-        this.user_id = user_id;
-        this.username = username;
-    }
-
-    public RespuestaWSLoguot() {
     }
 }

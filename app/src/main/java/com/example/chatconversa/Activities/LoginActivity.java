@@ -3,6 +3,7 @@ package com.example.chatconversa.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import com.example.chatconversa.Interfaces.ServicioWeb;
 import com.example.chatconversa.R;
 import com.example.chatconversa.Respuestas.RespuestaWSLogin;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -83,27 +85,69 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                         Log.d("Retrofit", respuestaWSLogin.toString());
                         //Envía la respuesta del login
                         savePreferences(respuestaWSLogin);
+                        new MaterialAlertDialogBuilder(LoginActivity.this)
+                                .setTitle("Titulo")
+                                .setMessage(respuestaWSLogin.getMessage())
+                                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        initLogout();
+                                    }
+                                })
+                                .show();
                     }else if (response.code()==401){
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            JSONObject error = jObjError.getJSONObject("errors");
-                            JSONArray names = error.names();
-                            for (int i = 0; i < names.length(); i++) {
-                                String nombreError = names.getString(i);
-                                String message = error.getJSONArray(names.getString(i)).getString(0);
-                                Log.d("Errores Registro", names.getString(i)+':'+ error.getJSONArray(names.getString(i)).getString(0));
-                                switch (nombreError){
-                                    case "username":
-                                        usernameL.setError(message);
-                                        break;
-                                    case "password":
-                                        passwordL.setError(message);
-                                        break;
+
+                            String mensaje = jObjError.getString("message");
+
+                            new MaterialAlertDialogBuilder(LoginActivity.this)
+                                    .setTitle("Upps! Ha ocurrido un error")
+                                    .setMessage(mensaje)
+                                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    })
+                                    .show();
+                            if (!mensaje.equalsIgnoreCase("Las credenciales son incorrectas o no existen")) {
+                                JSONObject error = jObjError.getJSONObject("errors");
+                                JSONArray names = error.names();
+
+                                for (int i = 0; i < names.length(); i++) {
+                                    String nombreError = names.getString(i);
+                                    String message = error.getJSONArray(names.getString(i)).getString(0);
+                                    Log.d("Errores Registro", names.getString(i) + ':' + error.getJSONArray(names.getString(i)).getString(0));
+                                    switch (nombreError) {
+                                        case "username":
+                                            usernameL.setError(message);
+                                            break;
+                                        case "password":
+                                            passwordL.setError(message);
+                                            break;
+                                    }
                                 }
                             }
                         } catch (JSONException | IOException e) {
                             e.printStackTrace();
                         }
+                    }else if(response.code() == 400){
+                        try{
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            String mensaje = jObjError.getString("message");
+                            new MaterialAlertDialogBuilder(LoginActivity.this)
+                                    .setTitle("Upps! Ha ocurrido un error")
+                                    .setMessage(mensaje)
+                                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    })
+                                    .show();
+                        }catch (JSONException | IOException e){
+                            e.printStackTrace();
+                        }
+
                     }
                 }
             }
@@ -151,6 +195,12 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     private void initRegistro(){
         Intent registro = new Intent(this, RegistrarActivity.class);
         startActivity(registro);
+        finish();
+    }
+
+    private void initLogout(){
+        Intent logout = new Intent(this, LogoutActivity.class);
+        startActivity(logout);
         finish();
     }
 }

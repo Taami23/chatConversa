@@ -15,134 +15,158 @@
         android:textSize="30dp"
         android:text="Registro" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/nameL"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ingrese su Nombre"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"
-        app:startIconDrawable="@drawable/identity"
-        app:errorEnabled="true"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/name"
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:orientation="vertical">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nameL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese su Nombre"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="60"
+                app:helperText="Campo requerido, máximo 60 caracteres"
+                app:startIconDrawable="@drawable/identity"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/lastnameL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ingrese su Apellido"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"
-        app:startIconDrawable="@drawable/identity"
-        app:errorEnabled="true"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/lastname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lastnameL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese su Apellido"
+                app:counterEnabled="true"
+                app:counterMaxLength="60"
+                app:helperText="Campo requerido, máximo 60 caracteres"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                app:startIconDrawable="@drawable/identity"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lastname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/runL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ingrese Run"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"
-        app:startIconDrawable="@drawable/identity"
-        app:errorEnabled="true"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/run"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/runL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese Run"
+                app:counterEnabled="true"
+                app:counterMaxLength="8"
+                app:helperText="Ejemplo: 11111111"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                app:startIconDrawable="@drawable/identity"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/run"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/usernameL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ingrese nombre de usuario"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"
-        app:startIconDrawable="@drawable/identity"
-        app:errorEnabled="true"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/usernameL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese nombre de usuario"
+                app:counterEnabled="true"
+                app:counterMaxLength="8"
+                app:helperText="Campo requerido, máximo 8 caracteres"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                app:startIconDrawable="@drawable/identity"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ingrese su email"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"
-        app:startIconDrawable="@drawable/mail_outline_black_24dp"
+            </com.google.android.material.textfield.TextInputLayout>
 
-        app:errorEnabled="true"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese su email"
+                app:counterEnabled="true"
+                app:counterMaxLength="50"
+                app:helperText="Campo requerido, máximo 50 caracteres"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                app:startIconDrawable="@drawable/mail_outline_black_24dp"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
 
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ingrese contraseña"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"
-        app:errorEnabled="true"
-        app:startIconDrawable="@drawable/lock_black_24dp"
-        app:endIconMode="password_toggle"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese contraseña"
+                app:counterEnabled="true"
+                app:counterMaxLength="12"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                app:errorEnabled="true"
+                app:startIconDrawable="@drawable/lock_black_24dp"
+                app:endIconMode="password_toggle"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    />
 
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cpasswordL"
@@ -180,22 +204,55 @@
         app:errorEnabled="true"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/token"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/token"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
 
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    >
+                    <Button
+                        android:id="@+id/cancelar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cancelar"
+                        android:layout_gravity="center"
+                        ></Button>
 
-    <Button
-        android:id="@+id/registrar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Registrarse"
-        android:layout_gravity="center"
-        >
-    </Button>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    >
 
+                    <Button
+                        android:id="@+id/registrar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Registrarse"
+                        android:layout_gravity="center"
+                        ></Button>
+
+                </LinearLayout>
+        </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
 
 </LinearLayout>

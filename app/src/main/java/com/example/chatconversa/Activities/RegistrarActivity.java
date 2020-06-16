@@ -34,23 +34,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegistrarActivity extends AppCompatActivity implements View.OnClickListener{
-    private Button registrar;
-    private TextInputEditText name;
-    private TextInputLayout nameL;
-    private TextInputEditText lastname;
-    private TextInputLayout lastnameL;
-    private TextInputEditText run;
-    private TextInputLayout runL;
-    private TextInputEditText username;
-    private TextInputLayout usernameL;
-    private TextInputEditText email;
-    private TextInputLayout emailL;
-    private TextInputEditText password;
-    private TextInputLayout passwordL;
-    private TextInputEditText cpassword;
-    private TextInputLayout cpasswordL;
-    private TextInputEditText token;
-    private TextInputLayout tokenL;
+    private Button registrar, cancelar;
+    private TextInputEditText name, lastname, run, username, email, password, token;
+    private TextInputLayout nameL, lastnameL, runL, usernameL, emailL, passwordL, tokenL;
     private ServicioWeb servicioWeb;
     public static final Pattern FORMAT_TOKEN = Pattern.compile("^[A-Z\\d]{6,6}$");
     public static final Pattern FORMAT_PASS = Pattern.compile("^(?=.[a-z])(?=.[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,12}$");
@@ -62,6 +48,7 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
         getSupportActionBar().hide();
         setContentView(R.layout.activity_registrar);
         registrar = findViewById(R.id.registrar);
+        cancelar = findViewById(R.id.cancelar);
         name = findViewById(R.id.name);
         nameL = findViewById(R.id.nameL);
         lastname = findViewById(R.id.lastname);
@@ -85,6 +72,12 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
         confirmaPass();
         validaToken();
         registrar.setOnClickListener(this);
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initInicio();
+            }
+        });
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/user/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         servicioWeb = retrofit.create(ServicioWeb.class);
