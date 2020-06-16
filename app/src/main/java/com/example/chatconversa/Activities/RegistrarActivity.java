@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,10 +47,14 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
     private TextInputLayout emailL;
     private TextInputEditText password;
     private TextInputLayout passwordL;
+    private TextInputEditText cpassword;
+    private TextInputLayout cpasswordL;
     private TextInputEditText token;
     private TextInputLayout tokenL;
     private ServicioWeb servicioWeb;
-
+    public static final Pattern FORMAT_TOKEN = Pattern.compile("^[A-Z\\d]{6,6}$");
+    public static final Pattern FORMAT_PASS = Pattern.compile("^(?=.[a-z])(?=.[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,12}$");
+    public static final Pattern FORMAT_EMAIL = Pattern.compile("[^@]+@[^@]+\\.[a-zA-Z]{2,}");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +74,16 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
         emailL = findViewById(R.id.emailL);
         password = findViewById(R.id.password);
         passwordL = findViewById(R.id.passwordL);
+        cpassword = findViewById(R.id.cpassword);
+        cpasswordL = findViewById(R.id.cpasswordL);
         token = findViewById(R.id.token);
         tokenL = findViewById(R.id.tokenL);
+        validarRun();
+        validaUserName();
+        validaEmail();
+        validaPassword();
+        confirmaPass();
+        validaToken();
         registrar.setOnClickListener(this);
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/user/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
@@ -178,4 +194,160 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
         startActivity(login);
         finish();
     }
+
+    private void validarRun(){
+        run.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (run.getText().toString().length()<7){
+                    runL.setError("El run debe tener mínimo 7 caracteres");
+                    registrar.setEnabled(false);
+                }else{
+                    runL.setError(null);
+                    registrar.setEnabled(true);
+                }
+            }
+        });
+    }
+
+    private void validaUserName(){
+        username.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (username.getText().toString().length()<4){
+                    usernameL.setError("El username debe tener mínimo 4 caracteres");
+                    registrar.setEnabled(false);
+                }else {
+                    usernameL.setError(null);
+                    registrar.setEnabled(true);
+                }
+
+            }
+        });
+    }
+
+    private void validaPassword(){
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Matcher matcher = FORMAT_PASS.matcher(password.getText().toString());
+                if (matcher.find()){
+                    passwordL.setError(null);
+                    registrar.setEnabled(true);
+                }else {
+                    passwordL.setError("Formato inválido, debe contener solo letras mayúsculas, minúsculas y números");
+                }
+            }
+        });
+
+    }
+
+    private void validaToken(){
+        token.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Matcher matcher = FORMAT_TOKEN.matcher(token.getText().toString());
+                if (matcher.find()){
+                    tokenL.setError(null);
+                    registrar.setEnabled(true);
+                }else {
+                    tokenL.setError("Formato inválido");
+                }
+            }
+        });
+    }
+
+    private void validaEmail(){
+        email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Matcher matcher = FORMAT_EMAIL.matcher(email.getText().toString());
+                if (matcher.find()){
+                    emailL.setError(null);
+                    registrar.setEnabled(true);
+                }else {
+                    emailL.setError("Ingrese un correo válido");
+                    registrar.setEnabled(false);
+                }
+            }
+        });
+    }
+
+    private void confirmaPass(){
+        cpassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String pass1 = password.getText().toString();
+                String pass2 = cpassword.getText().toString();
+                if (pass1.equals(pass2)){
+                    registrar.setEnabled(true);
+                    cpasswordL.setError(null);
+                }else {
+                    cpasswordL.setError("Las passwords no coinciden");
+                    registrar.setEnabled(false);
+                }
+            }
+        });
+    }
+
 }
