@@ -66,6 +66,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="5dp"
+            app:endIconMode="password_toggle"
             app:startIconDrawable="@drawable/lock_black_24dp"
             app:startIconTint="@color/White"
             android:textColorHint="@color/VerdeClarito"

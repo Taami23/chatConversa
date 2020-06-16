@@ -39,8 +39,9 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
     private TextInputLayout nameL, lastnameL, runL, usernameL, emailL, passwordL, cpasswordL, tokenL;
     private ServicioWeb servicioWeb;
     public static final Pattern FORMAT_TOKEN = Pattern.compile("^[A-Z\\d]{6,6}$");
-    public static final Pattern FORMAT_PASS = Pattern.compile("^(?=.[a-z])(?=.[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,12}$");
+    public static final Pattern FORMAT_PASS = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,12}$");
     public static final Pattern FORMAT_EMAIL = Pattern.compile("[^@]+@[^@]+\\.[a-zA-Z]{2,}");
+    public static final Pattern FORMAT_RUN = Pattern.compile("(\\d{7,8})$");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,18 +198,17 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (run.getText().toString().length()<7){
+                Matcher matcher = FORMAT_RUN.matcher(run.getText().toString());
+                if (!matcher.find()){
                     runL.setError("El run debe tener mínimo 7 caracteres");
                     registrar.setEnabled(false);
                 }else{
                     runL.setError(null);
                     registrar.setEnabled(true);
                 }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
     }
@@ -222,11 +222,6 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 if (username.getText().toString().length()<4){
                     usernameL.setError("El username debe tener mínimo 4 caracteres");
                     registrar.setEnabled(false);
@@ -234,7 +229,10 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
                     usernameL.setError(null);
                     registrar.setEnabled(true);
                 }
+            }
 
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
     }
@@ -248,18 +246,20 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 Matcher matcher = FORMAT_PASS.matcher(password.getText().toString());
                 if (matcher.find()){
                     passwordL.setError(null);
                     registrar.setEnabled(true);
                 }else {
+                    registrar.setEnabled(false);
                     passwordL.setError("Formato inválido, debe contener solo letras mayúsculas, minúsculas y números");
+
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -274,11 +274,6 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 Matcher matcher = FORMAT_TOKEN.matcher(token.getText().toString());
                 if (matcher.find()){
                     tokenL.setError(null);
@@ -286,6 +281,11 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
                 }else {
                     tokenL.setError("Formato inválido");
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
@@ -299,11 +299,6 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 Matcher matcher = FORMAT_EMAIL.matcher(email.getText().toString());
                 if (matcher.find()){
                     emailL.setError(null);
@@ -312,6 +307,11 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
                     emailL.setError("Ingrese un correo válido");
                     registrar.setEnabled(false);
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
@@ -326,10 +326,6 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 String pass1 = password.getText().toString();
                 String pass2 = cpassword.getText().toString();
                 if (pass1.equals(pass2)){
@@ -339,6 +335,10 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
                     cpasswordL.setError("Las passwords no coinciden");
                     registrar.setEnabled(false);
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
     }

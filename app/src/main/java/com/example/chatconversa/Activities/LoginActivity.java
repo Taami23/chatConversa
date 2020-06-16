@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +26,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,6 +50,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
+    public static final Pattern FORMAT_PASS = Pattern.compile("^(?=.[a-z])(?=.[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,12}$");
     public static final String CREDENTIALS = LoginActivity.class.getPackage().getName();
 
     @Override
@@ -59,6 +64,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         password = findViewById(R.id.password);
         passwordL=findViewById(R.id.passwordL);
         registrarse=findViewById(R.id.registrarL);
+        //validaPassword();
         iniciar.setOnClickListener(this);
         preferences = getSharedPreferences(CREDENTIALS, MODE_PRIVATE);
         registrarse.setOnClickListener(new View.OnClickListener() {
@@ -219,4 +225,28 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         startActivity(logout);
         finish();
     }
+    /*private void validaPassword(){
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Matcher matcher = FORMAT_PASS.matcher(password.getText().toString());
+                if (matcher.find()){
+                    passwordL.setError(null);
+                }else {
+                    passwordL.setError("Formato inválido, debe contener solo letras mayúsculas, minúsculas y números");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+    }*/
 }
