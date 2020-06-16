@@ -3,6 +3,7 @@ package com.example.chatconversa.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity  implements View.OnClickListener {
     private Button iniciar;
+    private Button registrarse;
     private TextInputEditText username;
     private TextInputLayout usernameL;
     private TextInputEditText password;
@@ -51,7 +53,16 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         usernameL = findViewById(R.id.usernameL);
         password = findViewById(R.id.password);
         passwordL=findViewById(R.id.passwordL);
+        registrarse=findViewById(R.id.registrarL);
         iniciar.setOnClickListener(this);
+        registrarse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initRegistro();
+            }
+        });
+
+
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/user/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
@@ -135,5 +146,11 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
             }
         }
         return uniqueID;
+    }
+
+    private void initRegistro(){
+        Intent registro = new Intent(this, RegistrarActivity.class);
+        startActivity(registro);
+        finish();
     }
 }
