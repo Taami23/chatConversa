@@ -15,6 +15,11 @@ import com.example.chatconversa.Respuestas.RespuestaWSLogin;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -67,6 +72,27 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                         Log.d("Retrofit", respuestaWSLogin.toString());
                         //Envía la respuesta del login
                         savePreferences(respuestaWSLogin);
+                    }else if (response.code()==401){
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            JSONObject error = jObjError.getJSONObject("errors");
+                            JSONArray names = error.names();
+                            for (int i = 0; i < names.length(); i++) {
+                                String nombreError = names.getString(i);
+                                String message = error.getJSONArray(names.getString(i)).getString(0);
+                                Log.d("Errores Registro", names.getString(i)+':'+ error.getJSONArray(names.getString(i)).getString(0));
+                                switch (nombreError){
+                                    case "username":
+                                        usernameL.setError(message);
+                                        break;
+                                    case "password":
+                                        passwordL.setError(message);
+                                        break;
+                                }
+                            }
+                        } catch (JSONException | IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
