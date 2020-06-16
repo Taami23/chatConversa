@@ -12,6 +12,7 @@ import com.example.chatconversa.Interfaces.ServicioWeb;
 import com.example.chatconversa.R;
 import com.example.chatconversa.Respuestas.RespuestaWSRegister;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,12 +29,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RegistrarActivity extends AppCompatActivity implements View.OnClickListener{
     private Button registrar;
     private TextInputEditText name;
+    private TextInputLayout nameL;
     private TextInputEditText lastname;
+    private TextInputLayout lastnameL;
     private TextInputEditText run;
+    private TextInputLayout runL;
     private TextInputEditText username;
+    private TextInputLayout usernameL;
     private TextInputEditText email;
+    private TextInputLayout emailL;
     private TextInputEditText password;
+    private TextInputLayout passwordL;
     private TextInputEditText token;
+    private TextInputLayout tokenL;
     private ServicioWeb servicioWeb;
 
 
@@ -44,12 +52,19 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_registrar);
         registrar = findViewById(R.id.registrar);
         name = findViewById(R.id.name);
+        nameL = findViewById(R.id.nameL);
         lastname = findViewById(R.id.lastname);
+        lastnameL = findViewById(R.id.lastnameL);
         run = findViewById(R.id.run);
+        runL = findViewById(R.id.runL);
         username = findViewById(R.id.username);
+        usernameL = findViewById(R.id.usernameL);
         email = findViewById(R.id.email);
+        emailL = findViewById(R.id.emailL);
         password = findViewById(R.id.password);
+        passwordL = findViewById(R.id.passwordL);
         token = findViewById(R.id.token);
+        tokenL = findViewById(R.id.tokenL);
         registrar.setOnClickListener(this);
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/user/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
@@ -74,10 +89,36 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
 
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            JSONArray jsonArray = jObjError.getJSONObject("errors").getJSONArray("username");
-                            Log.d("cacuca", jsonArray.getString(0));
-
-                            Log.d("Error 400", jObjError.getString("errors"));
+                            JSONObject error = jObjError.getJSONObject("errors");
+                            JSONArray names = error.names();
+                            for (int i = 0; i < names.length(); i++) {
+                                String nombreError = names.getString(i);
+                                String message = error.getJSONArray(names.getString(i)).getString(0);
+                                Log.d("Errores Registro", names.getString(i)+':'+ error.getJSONArray(names.getString(i)).getString(0));
+                                switch (nombreError){
+                                    case "name":
+                                        nameL.setError(message);
+                                        break;
+                                    case "lastname":
+                                        lastnameL.setError(message);
+                                        break;
+                                    case "run":
+                                        runL.setError(message);
+                                        break;
+                                    case "username":
+                                        usernameL.setError(message);
+                                        break;
+                                    case "email":
+                                        emailL.setError(message);
+                                        break;
+                                    case "password":
+                                        passwordL.setError(message);
+                                        break;
+                                    case "token_enterprise":
+                                        tokenL.setError(message);
+                                        break;
+                                }
+                            }
                         } catch (JSONException | IOException e) {
                             e.printStackTrace();
                         }

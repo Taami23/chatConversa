@@ -78,6 +78,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/botonInicio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Iniciar Sesión"
@@ -115,7 +116,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/textButton"
+                android:id="@+id/RegistroButton"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
