@@ -102,19 +102,19 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                     }else if (response.code()==401){
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            Log.d("Error", ""+jObjError.length());
+                            if (jObjError.length() == 3) {
+                                String mensaje = jObjError.getString("message");
+                                new MaterialAlertDialogBuilder(LoginActivity.this)
+                                        .setTitle("Upps! Ha ocurrido un error")
+                                        .setMessage(mensaje)
+                                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                            }
+                                        })
+                                        .show();
 
-                            String mensaje = jObjError.getString("message");
-
-                            new MaterialAlertDialogBuilder(LoginActivity.this)
-                                    .setTitle("Upps! Ha ocurrido un error")
-                                    .setMessage(mensaje)
-                                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                        }
-                                    })
-                                    .show();
-                            if (!mensaje.equalsIgnoreCase("Las credenciales son incorrectas o no existen")) {
                                 JSONObject error = jObjError.getJSONObject("errors");
                                 JSONArray names = error.names();
 
@@ -131,7 +131,19 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                                             break;
                                     }
                                 }
+                            }else {
+                                String mensaje = jObjError.getString("message");
+                                new MaterialAlertDialogBuilder(LoginActivity.this)
+                                        .setTitle("Upps! Ha ocurrido un error")
+                                        .setMessage(mensaje)
+                                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                            }
+                                        })
+                                        .show();
                             }
+
                         } catch (JSONException | IOException e) {
                             e.printStackTrace();
                         }
