@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,26 +31,27 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LogoutActivity extends AppCompatActivity implements View.OnClickListener {
     private Button cerrarSesion;
     private ServicioWeb servicioWeb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logout);
-        cerrarSesion.findViewById(R.id.cerrarSesion);
+        cerrarSesion = findViewById(R.id.cerrarSesion);
         cerrarSesion.setOnClickListener(this);
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("\"http://chat-conversa.unnamed-chile.com/ws/user/\"")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/user/")
             .addConverterFactory(GsonConverterFactory.create()).build();
         servicioWeb = retrofit.create(ServicioWeb.class);
 
     }
-
     @Override
     public void onClick(View view){
-        SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        String token = preferences.getString("token", "");
-        String user_id = preferences.getString("id", "");;
-        String username = preferences.getString("username", "");;
+        SharedPreferences preferences = getSharedPreferences(LoginActivity.CREDENTIALS, MODE_PRIVATE);
+        String token = preferences.getString("token", "caca");
+        String user_id = preferences.getString("id", "cacaca");;
+        String username = preferences.getString("username", "cacaca");;
+        Log.d("Preferences", token.concat(user_id).concat(username));
         final Call<RespuestaWSLoguot> respuestaWSLoguotCall = servicioWeb.logout("Bearer "+token, user_id, username);
         respuestaWSLoguotCall.enqueue(new Callback<RespuestaWSLoguot>() {
             @Override
@@ -59,6 +61,16 @@ public class LogoutActivity extends AppCompatActivity implements View.OnClickLis
                         RespuestaWSLoguot respuestaWSLoguot = response.body();
                         Log.d("Retrofit", respuestaWSLoguot.getMessage());
                         Log.d("Retrofit", respuestaWSLoguot.toString());
+                        new MaterialAlertDialogBuilder(LogoutActivity.this)
+                                .setTitle("Caca")
+                                .setMessage(respuestaWSLoguot.getMessage())
+                                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        initInicio();
+                                    }
+                                })
+                                .show();
                     }else if (response.code()==400){
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -117,4 +129,10 @@ public class LogoutActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
+    private void initInicio(){
+        Intent login  = new Intent (this, LoginActivity.class);
+        startActivity(login);
+        finish();
+    }
+
 }

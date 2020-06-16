@@ -44,6 +44,9 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     private static Integer elId = null;
     private static String userName = null;
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    public static final String CREDENTIALS = LoginActivity.class.getPackage().getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         passwordL=findViewById(R.id.passwordL);
         registrarse=findViewById(R.id.registrarL);
         iniciar.setOnClickListener(this);
+        preferences = getSharedPreferences(CREDENTIALS, MODE_PRIVATE);
         registrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,8 +164,8 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
     //Guarda las preferencias
     public void savePreferences(RespuestaWSLogin respuestaWSLogin){
-        SharedPreferences preferences = getSharedPreferences("credenciales",
-                Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(CREDENTIALS,
+                MODE_PRIVATE);
 
         //Extrae las preferencias requeridas desde
         //la respuesta del login

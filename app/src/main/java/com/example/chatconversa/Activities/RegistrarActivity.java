@@ -35,8 +35,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegistrarActivity extends AppCompatActivity implements View.OnClickListener{
     private Button registrar, cancelar;
-    private TextInputEditText name, lastname, run, username, email, password, token;
-    private TextInputLayout nameL, lastnameL, runL, usernameL, emailL, passwordL, tokenL;
+    private TextInputEditText name, lastname, run, username, email, password, cpassword, token;
+    private TextInputLayout nameL, lastnameL, runL, usernameL, emailL, passwordL, cpasswordL, tokenL;
     private ServicioWeb servicioWeb;
     public static final Pattern FORMAT_TOKEN = Pattern.compile("^[A-Z\\d]{6,6}$");
     public static final Pattern FORMAT_PASS = Pattern.compile("^(?=.[a-z])(?=.[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,12}$");

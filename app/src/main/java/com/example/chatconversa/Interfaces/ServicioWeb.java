@@ -23,6 +23,6 @@ public interface ServicioWeb {
                                   @Field("device_id") String device_id);
     @FormUrlEncoded
     @POST("logout")
-    Call<RespuestaWSLoguot> logout(@Header("token") String token, @Field("user_id") String user_id,
+    Call<RespuestaWSLoguot> logout(@Header("Authorization") String token, @Field("user_id") String user_id,
                                    @Field("username") String username);
 }
