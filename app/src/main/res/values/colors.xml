@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="fondo">#7BC6A7</color>
     <array name="reds">
         <item>@color/md_red_500</item>
         <item>@color/md_red_50</item>
