@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                         //Envía la respuesta del login
                         savePreferences(respuestaWSLogin);
                         new MaterialAlertDialogBuilder(LoginActivity.this)
-                                .setTitle("Titulo")
+                                .setTitle("Inicio de Sesión")
                                 .setMessage(respuestaWSLogin.getMessage())
                                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                     @Override

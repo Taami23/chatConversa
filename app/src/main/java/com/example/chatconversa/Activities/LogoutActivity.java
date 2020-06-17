@@ -62,7 +62,7 @@ public class LogoutActivity extends AppCompatActivity implements View.OnClickLis
                         Log.d("Retrofit", respuestaWSLoguot.getMessage());
                         Log.d("Retrofit", respuestaWSLoguot.toString());
                         new MaterialAlertDialogBuilder(LogoutActivity.this)
-                                .setTitle("Caca")
+                                .setTitle("Cerrar Sesión")
                                 .setMessage(respuestaWSLoguot.getMessage())
                                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                     @Override

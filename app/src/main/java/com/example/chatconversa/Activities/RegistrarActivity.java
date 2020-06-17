@@ -99,7 +99,7 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
                         Log.d("Retrofit", respuestaWSRegister.getMessage());
                         Log.d("Retrofit", respuestaWSRegister.toString());
                         new MaterialAlertDialogBuilder(RegistrarActivity.this)
-                                .setTitle("Titulo")
+                                .setTitle("Felicitaciones!")
                                 .setMessage(respuestaWSRegister.getMessage())
                                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                     @Override

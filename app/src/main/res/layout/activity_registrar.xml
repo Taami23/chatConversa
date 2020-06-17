@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#2A2A2B"
     tools:context=".Activities.RegistrarActivity">
 
     <TextView
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="30dp"
+        android:textColor="@color/md_white_1000"
         android:fontFamily="@font/my_fonts"
         android:text="Registro" />
 
@@ -31,10 +33,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:textColorHint="@color/md_white_1000"
+                app:counterTextColor="@color/md_white_1000"
+                app:startIconTint="@color/md_white_1000"
                 android:layout_marginBottom="5dp"
                 app:counterEnabled="true"
                 app:counterMaxLength="60"
-                app:helperText="Campo requerido, máximo 60 caracteres"
                 app:startIconDrawable="@drawable/identity"
                 app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -55,11 +59,13 @@
                 android:hint="Ingrese su Apellido"
                 app:counterEnabled="true"
                 app:counterMaxLength="60"
-                app:helperText="Campo requerido, máximo 60 caracteres"
                 android:layout_marginTop="0dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
+                app:counterTextColor="@color/md_white_1000"
+                android:textColorHint="@color/md_white_1000"
+                app:startIconTint="@color/md_white_1000"
                 app:startIconDrawable="@drawable/identity"
                 app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -79,11 +85,13 @@
                 android:hint="Ingrese Run"
                 app:counterEnabled="true"
                 app:counterMaxLength="8"
-                app:helperText="Ejemplo: 11111111"
                 android:layout_marginTop="0dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
+                android:textColorHint="@color/md_white_1000"
+                app:counterTextColor="@color/md_white_1000"
+                app:startIconTint="@color/md_white_1000"
                 app:startIconDrawable="@drawable/identity"
                 app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -103,11 +111,13 @@
                 android:hint="Ingrese nombre de usuario"
                 app:counterEnabled="true"
                 app:counterMaxLength="8"
-                app:helperText="Campo requerido, máximo 8 caracteres"
                 android:layout_marginTop="0dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
+                app:counterTextColor="@color/md_white_1000"
+                android:textColorHint="@color/md_white_1000"
+                app:startIconTint="@color/md_white_1000"
                 app:startIconDrawable="@drawable/identity"
                 app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -127,11 +137,13 @@
                 android:hint="Ingrese su email"
                 app:counterEnabled="true"
                 app:counterMaxLength="50"
-                app:helperText="Campo requerido, máximo 50 caracteres"
+                app:counterTextColor="@color/md_white_1000"
                 android:layout_marginTop="0dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
+                android:textColorHint="@color/md_white_1000"
+                app:startIconTint="@color/md_white_1000"
                 app:startIconDrawable="@drawable/mail_outline_black_24dp"
                 app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -155,8 +167,12 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
+                app:counterTextColor="@color/md_white_1000"
                 app:errorEnabled="true"
+                android:textColorHint="@color/md_white_1000"
+                app:startIconTint="@color/md_white_1000"
                 app:startIconDrawable="@drawable/lock_black_24dp"
+                app:endIconTint="@color/md_white_1000"
                 app:endIconMode="password_toggle"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -178,7 +194,10 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="5dp"
+        android:textColorHint="@color/md_white_1000"
+        app:startIconTint="@color/md_white_1000"
         app:errorEnabled="true"
+        app:endIconTint="@color/md_white_1000"
         app:startIconDrawable="@drawable/lock_black_24dp"
         app:endIconMode="password_toggle"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -203,6 +222,9 @@
         android:layout_marginBottom="5dp"
         app:counterEnabled="true"
         app:counterMaxLength="6"
+        app:counterTextColor="@color/md_white_1000"
+        android:textColorHint="@color/md_white_1000"
+        app:startIconTint="@color/md_white_1000"
         app:startIconDrawable="@drawable/domain_black_24dp"
         app:errorEnabled="true"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">

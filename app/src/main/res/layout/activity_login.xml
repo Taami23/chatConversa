@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="6"
+    android:background="@drawable/fondo3"
     tools:context=".Activities.LoginActivity">
 
     <LinearLayout
@@ -17,12 +18,20 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:layout_gravity="center|bottom"
             android:gravity="center"
             android:paddingTop="40dp"
-
             android:src="@drawable/logov2" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ChatConversa"
+            android:textSize="50dp"
+            android:textColor="@color/md_amber_50"
+            android:layout_gravity="center"
+            android:fontFamily="@font/yellow_rabbifontt"
+            ></TextView>
 
     </LinearLayout>
     <LinearLayout
@@ -35,20 +44,23 @@
             android:id="@+id/usernameL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingrese su nombre de usuario"
-            android:layout_marginTop="10dp"
+            android:hint="USUARIO"
+            app:hintTextColor="@color/md_white_1000"
+            android:layout_marginTop="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:textColorHint="@color/md_white_1000"
             android:layout_marginBottom="5dp"
+            app:startIconTint="@color/md_white_1000"
             app:startIconDrawable="@drawable/identity"
             app:errorEnabled="true"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username"
+                android:fontFamily="monospace"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,18 +68,23 @@
             android:id="@+id/passwordL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingrese su password"
+            android:hint="CONTRASEÑA"
             android:layout_marginTop="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="5dp"
+            app:boxStrokeColor="@color/md_white_1000"
+            android:textColorHint="@color/md_white_1000"
             app:endIconMode="password_toggle"
+            app:startIconTint="@color/md_white_1000"
+            app:endIconTint="@color/md_white_1000"
             app:startIconDrawable="@drawable/lock_black_24dp"
             app:errorEnabled="true"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+           >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password"
+                android:fontFamily="monospace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -81,6 +98,7 @@
             android:layout_height="wrap_content"
             android:text="Iniciar Sesión"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
             ></Button>
     </LinearLayout>
     <LinearLayout
@@ -100,7 +118,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:textSize="20dp"
-                android:layout_marginTop="55dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="35dp"
                 android:text="Nuevo Usuario?"></TextView>
 
 
@@ -113,12 +132,12 @@
 
             <Button
                 android:id="@+id/registrarL"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="25dp"
                 android:textSize="17dp"
+                android:layout_marginLeft="5dp"
                 android:text="Registrarse"
                 ></Button>
 

@@ -3,21 +3,20 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/md_black_1000_50</item>
-        <item name="colorPrimaryDark">@color/md_amber_600</item>
-        <item name="colorAccent">@color/md_blue_grey_800</item>
-        <item name="android:statusBarColor">@color/ic_launcher_background</item>
-        <item name="android:colorBackground">@color/fondo</item>
-        <item name="android:textColor">#347197</item>
-        <item name="textAppearanceButton">@style/AppTheme.Button</item>
-        <item name="materialButtonStyle">@style/AppButton</item>
+        <item name="colorPrimary">#FEFEFF</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="colorPrimaryDark">@color/md_cyan_A700</item>
+        <item name="colorAccent">@color/md_black_1000</item>
+        <item name="android:statusBarColor">#000000</item>
+        <item name="android:textColor">#000000</item>
         <item name="shapeAppearanceSmallComponent">@style/AppShapeAppearance.SmallComponent</item>
+        <item name="materialButtonStyle">@style/AppButton</item>
         <item name="colorError">#6B51A5</item>
+        <item name="strokeColor">@color/md_white_1000</item>
+        <item name="backgroundTint">#00000000</item>
+        <item name="materialAlertDialogTheme">@style/dialog</item>
     </style>
 
-    <style name="AppTheme.Button" parent="TextAppearance.MaterialComponents.Button">
-        <item name="android:textAllCaps">false</item>
-    </style>
 
     <style name="AppShapeAppearance.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">cut</item>
@@ -29,14 +28,19 @@
     </style>
 
     <style name="AppButton" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">#4AAC83</item>
-        <item name="android:textColor">@color/md_black_1000_50</item>
+        <item name="backgroundTint">#6B51A5</item>
+        <item name="android:textColor">@color/md_blue_50</item>
         <item name="shapeAppearanceOverlay">@style/AppShapeAppearanceButton</item>
     </style>
 
     <style name="AppShapeAppearanceButton" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">8dp</item>
+        <item name="cornerSize">20dp</item>
 
+    </style>
+    <style name="dialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/md_red_900</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:background">#2A2A2B</item>
     </style>
 </resources>
