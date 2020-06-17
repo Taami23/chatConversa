@@ -5,15 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="5"
-    android:background="@color/VerdeOscurito"
+    android:weightSum="6"
     tools:context=".Activities.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="2">
 
         <ImageView
             android:id="@+id/imageView"
@@ -29,7 +28,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:orientation="vertical"
         >
         <com.google.android.material.textfield.TextInputLayout
@@ -42,11 +41,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="5dp"
             app:startIconDrawable="@drawable/identity"
-            app:startIconTint="@color/White"
-            app:boxStrokeColor="@color/VerdeClarito"
-            app:hintTextColor="@color/VerdeClarito"
             app:errorEnabled="true"
-            android:textColorHint="@color/VerdeClarito"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -68,10 +63,6 @@
             android:layout_marginBottom="5dp"
             app:endIconMode="password_toggle"
             app:startIconDrawable="@drawable/lock_black_24dp"
-            app:startIconTint="@color/White"
-            android:textColorHint="@color/VerdeClarito"
-            app:boxStrokeColor="@color/VerdeClarito"
-            app:hintTextColor="@color/VerdeClarito"
             app:errorEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -90,7 +81,6 @@
             android:layout_height="wrap_content"
             android:text="Iniciar Sesión"
             android:layout_gravity="center"
-            android:backgroundTint="@color/LimeGreen"
             ></Button>
     </LinearLayout>
     <LinearLayout
@@ -98,7 +88,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="2"
-        android:layout_weight="1">
+        android:layout_weight="2">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -111,7 +101,6 @@
                 android:layout_gravity="right"
                 android:textSize="20dp"
                 android:layout_marginTop="55dp"
-                android:textColor="@color/Gris"
                 android:text="Nuevo Usuario?"></TextView>
 
 
@@ -131,7 +120,7 @@
                 android:layout_marginTop="45dp"
                 android:textSize="17dp"
                 android:text="Registrarse"
-                android:textColor="@color/LimeGreen" />
+                ></Button>
 
         </LinearLayout>
     </LinearLayout>
