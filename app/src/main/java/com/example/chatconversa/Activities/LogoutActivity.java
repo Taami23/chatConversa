@@ -2,12 +2,14 @@ package com.example.chatconversa.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -146,6 +148,30 @@ public class LogoutActivity extends AppCompatActivity implements View.OnClickLis
         Intent login  = new Intent (this, LoginActivity.class);
         startActivity(login);
         finish();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Salir")
+                    .setMessage("Estás seguro?")
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which){
+                            //Salir
+                            LogoutActivity.this.finish();
+                        }
+                    })
+                    .show();
+            return true;
+        }else if (keyCode == KeyEvent.KEYCODE_HOME){
+            moveTaskToBack(true);
+        }
+        return super.onKeyDown(keyCode, event);
+
     }
 
 }

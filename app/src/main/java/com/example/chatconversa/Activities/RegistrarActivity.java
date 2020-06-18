@@ -2,12 +2,14 @@ package com.example.chatconversa.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -184,6 +186,7 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
             }
         });
     }
+
     private void initInicio(){
         Intent login  = new Intent (this, LoginActivity.class);
         startActivity(login);
@@ -342,6 +345,30 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
             public void afterTextChanged(Editable s) {
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Salir")
+                    .setMessage("Estás seguro?")
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which){
+                            //Salir
+                            RegistrarActivity.this.finish();
+                        }
+                    })
+                    .show();
+            return true;
+        }else if (keyCode == KeyEvent.KEYCODE_HOME){
+            moveTaskToBack(true);
+        }
+        return super.onKeyDown(keyCode, event);
+
     }
 
 }

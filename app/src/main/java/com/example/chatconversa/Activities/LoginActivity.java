@@ -2,6 +2,7 @@ package com.example.chatconversa.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -75,8 +76,6 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                 initRegistro();
             }
         });
-
-
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/user/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
@@ -223,6 +222,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         finish();
     }
 
+
     private void initLogout(){
         Intent logout = new Intent(this, LogoutActivity.class);
         startActivity(logout);
@@ -262,4 +262,29 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         });
 
     }*/
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Salir")
+                    .setMessage("Estás seguro?")
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which){
+                            //Salir
+                            LoginActivity.this.finish();
+                        }
+                    })
+                    .show();
+            return true;
+        }else if (keyCode == KeyEvent.KEYCODE_HOME){
+            moveTaskToBack(true);
+        }
+        return super.onKeyDown(keyCode, event);
+
+    }
+
 }
