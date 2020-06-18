@@ -88,6 +88,10 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View view){
+        if (cpassword.getText().toString().isEmpty()){
+                cpasswordL.setError("Campo obligatorio");
+                return;
+        }
         final Call<RespuestaWSRegister> registerCall = servicioWeb.registrer(name.getText().toString(), lastname.getText().toString(),
                 run.getText().toString(), username.getText().toString(), email.getText().toString(), password.getText().toString(),
                 token.getText().toString());
