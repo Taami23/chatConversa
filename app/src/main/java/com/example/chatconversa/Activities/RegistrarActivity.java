@@ -40,7 +40,7 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
     private ServicioWeb servicioWeb;
     public static final Pattern FORMAT_TOKEN = Pattern.compile("^[A-Z\\d]{6,6}$");
     public static final Pattern FORMAT_PASS = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,12}$");
-    public static final Pattern FORMAT_EMAIL = Pattern.compile("[^@]+@[^@]+\\.[a-zA-Z]{2,}");
+    public static final Pattern FORMAT_EMAIL = Pattern.compile("[^@]{3,25}@[^@]{4,25}\\.[a-zA-Z]{2,4}");
     public static final Pattern FORMAT_RUN = Pattern.compile("(\\d{7,8})$");
 
     @Override
@@ -146,6 +146,7 @@ public class RegistrarActivity extends AppCompatActivity implements View.OnClick
                                         break;
                                     case "password":
                                         passwordL.setError(message);
+                                        cpasswordL.setError("Este campo es obligatorio");
                                         break;
                                     case "token_enterprise":
                                         tokenL.setError(message);

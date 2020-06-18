@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -65,6 +66,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         passwordL=findViewById(R.id.passwordL);
         registrarse=findViewById(R.id.registrarL);
         //validaPassword();
+        eliminaErrorPass();
         iniciar.setOnClickListener(this);
         preferences = getSharedPreferences(CREDENTIALS, MODE_PRIVATE);
         registrarse.setOnClickListener(new View.OnClickListener() {
@@ -95,8 +97,8 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                         Log.d("Retrofit", respuestaWSLogin.toString());
                         //Envía la respuesta del login
                         savePreferences(respuestaWSLogin);
-                        new MaterialAlertDialogBuilder(LoginActivity.this)
-                                .setTitle("Inicio de Sesión")
+                        /*new MaterialAlertDialogBuilder(LoginActivity.this)
+                                .setTitle("Hola "+response.body().getData().getName()+"!")
                                 .setMessage(respuestaWSLogin.getMessage())
                                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                     @Override
@@ -104,7 +106,8 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                                         initLogout();
                                     }
                                 })
-                                .show();
+                                .show();*/
+                        initLogout();
                     }else if (response.code()==401){
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -224,6 +227,16 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         Intent logout = new Intent(this, LogoutActivity.class);
         startActivity(logout);
         finish();
+    }
+
+    private void eliminaErrorPass(){
+        password.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                passwordL.setError(null);
+                return false;
+            }
+        });
     }
     /*private void validaPassword(){
         password.addTextChangedListener(new TextWatcher() {
