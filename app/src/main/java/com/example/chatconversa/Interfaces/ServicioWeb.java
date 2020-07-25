@@ -1,14 +1,19 @@
 package com.example.chatconversa.Interfaces;
 
+import com.example.chatconversa.Respuestas.RespuestaWSImagen;
 import com.example.chatconversa.Respuestas.RespuestaWSLogin;
 import com.example.chatconversa.Respuestas.RespuestaWSLoguot;
+import com.example.chatconversa.Respuestas.RespuestaWSMessages;
 import com.example.chatconversa.Respuestas.RespuestaWSRegister;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface ServicioWeb {
     @FormUrlEncoded
@@ -25,4 +30,14 @@ public interface ServicioWeb {
     @POST("logout")
     Call<RespuestaWSLoguot> logout(@Header("Authorization") String token, @Field("user_id") String user_id,
                                    @Field("username") String username);
+
+    @FormUrlEncoded
+    @POST("get")
+    Call<RespuestaWSMessages> messages(@Header("Authorization") String token, @Field("user_id") String user_id,
+                                       @Field("username") String username);
+
+    @Multipart
+    @POST("load/image")
+    Call<RespuestaWSImagen> image(@Header("Authorization") String token, @Part("user_id") String user_id,
+                                  @Part("username") String username, @Part MultipartBody.Part user_image);
 }

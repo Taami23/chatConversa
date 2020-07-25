@@ -2,14 +2,11 @@ package com.example.chatconversa.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,7 +25,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.UUID;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import retrofit2.Call;
@@ -77,6 +73,8 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
             }
         });
 
+
+
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/user/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         servicioWeb = retrofit.create(ServicioWeb.class);
@@ -90,6 +88,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
             @Override
             public void onResponse(Call<RespuestaWSLogin> call, Response<RespuestaWSLogin> response) {
                 if (response != null){
+                    Log.d("CODIGO", ""+ response.code());
                     if (response.body() != null && response.code()==200){
                         RespuestaWSLogin respuestaWSLogin = response.body();
                         Log.d("Retrofit", "Sesión Iniciada");
@@ -106,7 +105,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                                     }
                                 })
                                 .show();*/
-                        initLogout();
+                        initMessages();
                     }else if (response.code()==401){
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -222,10 +221,9 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         finish();
     }
 
-
-    private void initLogout(){
-        Intent logout = new Intent(this, LogoutActivity.class);
-        startActivity(logout);
+    private void initMessages(){
+        Intent messages = new Intent(this, MessagesActivity.class);
+        startActivity(messages);
         finish();
     }
 
@@ -262,29 +260,4 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         });
 
     }*/
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("Salir")
-                    .setMessage("Estás seguro?")
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which){
-                            //Salir
-                            LoginActivity.this.finish();
-                        }
-                    })
-                    .show();
-            return true;
-        }else if (keyCode == KeyEvent.KEYCODE_HOME){
-            moveTaskToBack(true);
-        }
-        return super.onKeyDown(keyCode, event);
-
-    }
-
 }
