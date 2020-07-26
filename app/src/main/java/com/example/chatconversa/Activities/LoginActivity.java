@@ -45,6 +45,12 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     private static String elToken = null;
     private static Integer elId = null;
     private static String userName = null;
+    private static String name = null;
+    private static String lastname = null;
+    private static String email = null;
+    private static String run = null;
+    private static String image = null;
+    private static String thumbnail = null;
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -191,12 +197,25 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         elToken = respuestaWSLogin.getToken();
         elId = respuestaWSLogin.getData().getId();
         userName = respuestaWSLogin.getData().getUsername();
+        name = respuestaWSLogin.getData().getName();
+        lastname = respuestaWSLogin.getData().getLastname();
+        email = respuestaWSLogin.getData().getEmail();
+        run = respuestaWSLogin.getData().getRun();
+        image = respuestaWSLogin.getData().getImage();
+        thumbnail = respuestaWSLogin.getData().getThumbnail();
+
 
         //Guarda y comitea las preferencias
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("token", elToken);
         editor.putString("id", elId.toString());
         editor.putString("username", userName);
+        editor.putString("name", name);
+        editor.putString("lastname", lastname);
+        editor.putString("email", email);
+        editor.putString("run", run);
+        editor.putString("image", image);
+        editor.putString("thumbnail", thumbnail);
         editor.commit();
     }
 

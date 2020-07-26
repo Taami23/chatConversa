@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.chatconversa.Interfaces.ServicioWeb;
 import com.example.chatconversa.R;
@@ -27,10 +30,18 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
+    SharedPreferences preferences;
     private Button cerrarSesion;
     private ServicioWeb servicioWeb;
+    private ImageButton atras;
+    private TextView username;
+    private TextView name;
+    private TextView lastname;
+    private TextView run;
+    private TextView email;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +49,28 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         cerrarSesion = findViewById(R.id.cerrarSesion);
+        username = findViewById(R.id.username);
+        name = findViewById(R.id.name);
+        lastname = findViewById(R.id.lastname);
+        run = findViewById(R.id.run);
+        email = findViewById(R.id.email);
+        image = findViewById(R.id.image);
+        atras = findViewById(R.id.atras);
+
+        preferences = getSharedPreferences(LoginActivity.CREDENTIALS, MODE_PRIVATE);
+        username.setText(preferences.getString("username", "username no encontrado").toUpperCase());
+        name.setText("NOMBRE: " + preferences.getString("name", "name no encontrado").toUpperCase());
+        lastname.setText("APELLIDO: " + preferences.getString("lastname", "lastname no encontrado").toUpperCase());
+        run.setText("RUN: " + preferences.getString("run", "run no encontrado").toUpperCase());
+        email.setText("CORREO: " + preferences.getString("email", "email no encontrado").toUpperCase());
+
+
+        atras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initMessages();
+            }
+        });
         cerrarSesion.setOnClickListener(this);
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/user/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
@@ -52,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences preferences = getSharedPreferences(LoginActivity.CREDENTIALS, MODE_PRIVATE);
+
                         String token = preferences.getString("token", "Token no encontrado");
                         String user_id = preferences.getString("id", "Id no encontrado");
                         String username = preferences.getString("username", "Username no encontrado");
@@ -69,9 +102,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                         new MaterialAlertDialogBuilder(ProfileActivity.this)
                                                 .setTitle("Adiós "+username)
                                                 .setMessage(respuestaWSLoguot.getMessage())
+                                                .setCancelable(false)
                                                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
+                                                        SharedPreferences.Editor editor = preferences.edit();
+                                                        editor.clear().apply();
                                                         initInicio();
                                                     }
                                                 })
@@ -145,6 +181,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void initInicio(){
         Intent login  = new Intent (this, LoginActivity.class);
         startActivity(login);
+        finish();
+    }
+
+    private  void initMessages(){
+        Intent messages = new Intent(this, MessagesActivity.class);
+        startActivity(messages);
         finish();
     }
 

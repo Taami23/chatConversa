@@ -6,14 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="6"
-    android:background="@drawable/fondo3"
+    android:background="@drawable/abstrades"
     tools:context=".Activities.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="2">
+        android:layout_weight="2"
+        >
 
         <ImageView
             android:id="@+id/imageView"
@@ -34,33 +35,35 @@
             ></TextView>
 
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="191dp"
+        android:layout_gravity="center"
         android:layout_weight="2"
-        android:orientation="vertical"
-        >
+        android:background="@drawable/shapelayout"
+        android:orientation="vertical">
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/usernameL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="USUARIO"
-            app:hintTextColor="@color/md_white_1000"
-            android:layout_marginTop="0dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="0dp"
             android:layout_marginRight="20dp"
-            android:textColorHint="@color/md_white_1000"
             android:layout_marginBottom="5dp"
-            app:startIconTint="@color/md_white_1000"
-            app:startIconDrawable="@drawable/identity"
+            android:hint="USUARIO"
+            android:textColorHint="@color/md_white_1000"
             app:errorEnabled="true"
-        >
+            app:hintTextColor="@color/md_white_1000"
+            app:startIconDrawable="@drawable/identity"
+            app:startIconTint="@color/md_white_1000">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username"
-                android:fontFamily="monospace"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,27 +71,25 @@
             android:id="@+id/passwordL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="CONTRASEÑA"
-            android:layout_marginTop="0dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="0dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="5dp"
-            app:boxStrokeColor="@color/md_white_1000"
+            android:hint="CONTRASEÑA"
             android:textColorHint="@color/md_white_1000"
+            app:boxStrokeColor="@color/md_white_1000"
             app:endIconMode="password_toggle"
-            app:startIconTint="@color/md_white_1000"
             app:endIconTint="@color/md_white_1000"
-            app:startIconDrawable="@drawable/lock_black_24dp"
             app:errorEnabled="true"
-           >
+            app:startIconDrawable="@drawable/lock_black_24dp"
+            app:startIconTint="@color/md_white_1000">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password"
-                android:fontFamily="monospace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                />
+                android:fontFamily="monospace"
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,10 +97,9 @@
             android:id="@+id/iniciarL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Iniciar Sesión"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            ></Button>
+            android:text="Iniciar Sesión"></Button>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -120,6 +120,7 @@
                 android:textSize="20dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="35dp"
+                android:textColor="@color/md_white_1000"
                 android:text="Nuevo Usuario?"></TextView>
 
 

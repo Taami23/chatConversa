@@ -12,10 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.ProfileActivity"></activity>
+        <activity android:name=".Activities.LoginActivity"></activity>
+        <activity android:name=".Activities.ProfileActivity" />
         <activity android:name=".Activities.RegistrarActivity" />
         <activity android:name=".Activities.MessagesActivity" />
-        <activity android:name=".Activities.LoginActivity">
+        <activity android:name=".Activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

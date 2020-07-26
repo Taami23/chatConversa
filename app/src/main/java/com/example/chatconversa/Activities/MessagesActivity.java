@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.chatconversa.Interfaces.ServicioWeb;
 import com.example.chatconversa.R;
@@ -49,8 +50,10 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
 
     public void servicio(){
         SharedPreferences preferences = getSharedPreferences(LoginActivity.CREDENTIALS, MODE_PRIVATE);
+        TextView texto = findViewById(R.id.texto1);
         String token = preferences.getString("token", "Token no encontrado");
         Log.d("TOKEN", token);
+        texto.setText(token);
         String user_id = preferences.getString("id", "Id no encontrado");
         Log.d("TOKEN", user_id);
         String username = preferences.getString("username", "Username no encontrado");
