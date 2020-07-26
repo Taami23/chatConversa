@@ -5,6 +5,7 @@ import com.example.chatconversa.Respuestas.RespuestaWSLogin;
 import com.example.chatconversa.Respuestas.RespuestaWSLoguot;
 import com.example.chatconversa.Respuestas.RespuestaWSMessages;
 import com.example.chatconversa.Respuestas.RespuestaWSRegister;
+import com.example.chatconversa.Respuestas.RespuestaWSSendMessage;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -14,6 +15,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface ServicioWeb {
     @FormUrlEncoded
@@ -35,6 +37,16 @@ public interface ServicioWeb {
     @POST("get")
     Call<RespuestaWSMessages> messages(@Header("Authorization") String token, @Field("user_id") String user_id,
                                        @Field("username") String username);
+
+//    @Multipart
+//    @POST("send")
+//    Call<RespuestaWSSendMessage> send(@Header("Authorization") String token, @Part("user_id") String user_id,
+//                                      @Part("username") String username, @Part("message")String message, @Query("image") MultipartBody.Part user_image, @Part("latitude") Double latitude, @Part("longitude") Double longitude);
+    @FormUrlEncoded
+    @POST("send")
+    Call<RespuestaWSSendMessage> send(@Header("Authorization") String token, @Field("user_id") String user_id,
+                                      @Field("username") String username, @Field("message")String message, @Field("latitude") Double latitude, @Field("longitude") Double longitude);
+
 
     @Multipart
     @POST("load/image")

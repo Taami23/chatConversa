@@ -2,19 +2,18 @@ package com.example.chatconversa.Respuestas;
 
 import com.example.chatconversa.Objetos.Data;
 
-
-public class RespuestaWSImagen {
+public class RespuestaWSSendMessage {
     private Integer status_code;
     private String message;
     private Data data;
 
-    public RespuestaWSImagen() {
-    }
-
-    public RespuestaWSImagen(Integer status_code, String message, Data data) {
+    public RespuestaWSSendMessage(Integer status_code, String message, Data data) {
         this.status_code = status_code;
         this.message = message;
         this.data = data;
+    }
+
+    public RespuestaWSSendMessage() {
     }
 
     public Integer getStatus_code() {
@@ -43,7 +42,7 @@ public class RespuestaWSImagen {
 
     @Override
     public String toString() {
-        return "RespuestaWSImagen{" +
+        return "RespuestaWSSendMessage{" +
                 "status_code=" + status_code +
                 ", message='" + message + '\'' +
                 ", data=" + data +

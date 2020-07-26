@@ -2,6 +2,7 @@ package com.example.chatconversa.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -65,6 +66,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         iniciar = findViewById(R.id.iniciarL);
         username = findViewById(R.id.username);
         usernameL = findViewById(R.id.usernameL);
+        password = findViewById(R.id.password);
         password = findViewById(R.id.password);
         passwordL=findViewById(R.id.passwordL);
         registrarse=findViewById(R.id.registrarL);
@@ -254,6 +256,29 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                 return false;
             }
         });
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Salir de la app")
+                    .setMessage("Estás seguro?")
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Salir
+                            LoginActivity.this.finish();
+                        }
+                    })
+                    .show();
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_HOME) {
+            moveTaskToBack(true);
+        }
+        return super.onKeyDown(keyCode, event);
+
     }
     /*private void validaPassword(){
         password.addTextChangedListener(new TextWatcher() {
