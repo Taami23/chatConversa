@@ -1,31 +1,43 @@
 package com.example.chatconversa.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.example.chatconversa.ArmarMensaje;
 import com.example.chatconversa.Interfaces.ServicioWeb;
+import com.example.chatconversa.Objetos.Data;
 import com.example.chatconversa.Objetos.Mensaje;
 import com.example.chatconversa.R;
 import com.example.chatconversa.Respuestas.RespuestaWSMessages;
 import com.example.chatconversa.Respuestas.RespuestaWSSendMessage;
+import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
+import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.PusherEvent;
+import com.pusher.client.channel.SubscriptionEventListener;
+import com.pusher.client.connection.ConnectionEventListener;
+import com.pusher.client.connection.ConnectionState;
+import com.pusher.client.connection.ConnectionStateChange;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -48,11 +60,15 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
     private String token;
     private String username;
     private String user_id;
+    private static final String CHANNEL_ID = "PUSHER_MSG";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
+        createChannel();
+        Intent intent = new Intent(this, MessagesActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(MessagesActivity.this, 0, intent, 0);
         profile = findViewById(R.id.profileButton);
         profile.setOnClickListener(this);
         mensaje = findViewById(R.id.textMessage);
@@ -63,22 +79,79 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         LinearLayoutManager linear = new LinearLayoutManager(this);
         mensajes.setLayoutManager(linear);
         mensajes.setAdapter(armador);
-        armador.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                super.onItemRangeInserted(positionStart, itemCount);
-                setScrollBar();
-            }
-        });
+        PusherOptions options = new PusherOptions();
+
         getPreferences();
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/message/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         servicioWeb = retrofit.create(ServicioWeb.class);
         servicio();
+        options.setCluster("us2");
+        Pusher pusher = new Pusher("46e8ded9439a0fef8cbc", options);
+        pusher.connect(new ConnectionEventListener() {
+            @Override
+            public void onConnectionStateChange(ConnectionStateChange change) {
+                Log.d("PUSHER", "Estado actual: "+change.getCurrentState().name()
+                        +"Estado previo: "
+                        +change.getPreviousState().name());
+            }
+
+            @Override
+            public void onError(String message, String code, Exception e) {
+                Log.d("PUHSER", "ERROR PUSHER\n"
+                        +"Mensaje: " + message + "\n"
+                        +"Código: "+ code + "\n"
+                        +"e: "+ e + "\n");
+            }
+        }, ConnectionState.ALL);
+
+        Channel channel = pusher.subscribe("my-channel");
+        channel.bind("my-event", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(PusherEvent event) {
+                        Log.d("PUSHER", "Nuevo mensaje: "+event.toString());
+                        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(MessagesActivity.this,CHANNEL_ID)
+                                .setContentIntent(pendingIntent)
+                                .setSmallIcon(R.drawable.notification_icon)
+                                .setContentTitle("Notification")
+                                .setContentText("Mensaje")
+                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                .setAutoCancel(true);
+                        try {
+                            JSONObject object = new JSONObject(event.toString());
+                            nBuilder = new NotificationCompat.Builder(MessagesActivity.this,CHANNEL_ID)
+                                    .setContentIntent(pendingIntent)
+                                    .setSmallIcon(R.drawable.notification_icon)
+                                    .setContentTitle("Mensaje de: "+object.getJSONObject("data").getJSONObject("message")
+                                            .getJSONObject("user").getString("username"))
+                                    .setContentText(object.getJSONObject("data").getJSONObject("message").getString("message"))
+                                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                    .setAutoCancel(true);
+
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                }
+
+                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MessagesActivity.this);
+                notificationManagerCompat.notify(5, nBuilder.build());
+            }
+        });
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 servicioSend();
+                mensaje.setText("");
+            }
+        });
+
+
+        armador.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                setScrollBar();
             }
         });
     }
@@ -98,7 +171,10 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                     Log.d("CODIGO", ""+response.code());
                     if(response.body() != null && response.code()== 200){
                         RespuestaWSMessages respuestaWSMessages = response.body();
-                        Log.d("Retrofit Mensaje", respuestaWSMessages.toString());
+                        Data[] datas = respuestaWSMessages.getData();
+                        for (int i=datas.length-1; i>=0;i--){
+                            armador.addMensaje(new Mensaje(datas[i].getUser().getUsername(),datas[i].getMessage(), datas[i].getUser().getUser_image(), datas[i].getDate()));
+                        }
                     }else if (response.code()==400){
                         try{
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -236,5 +312,13 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
 
     private void setScrollBar(){
         mensajes.scrollToPosition(armador.getItemCount()-1);
+    }
+
+    private void createChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "PUSHER", NotificationManager.IMPORTANCE_HIGH);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

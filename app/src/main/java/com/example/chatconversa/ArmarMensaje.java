@@ -24,16 +24,16 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
     }
 
     public void addMensaje(Mensaje m){
-
         mensajeList.add(m);
         notifyItemInserted(mensajeList.size());
     }
 
+
     @NonNull
     @Override
     public ContenidoMensaje onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.vista_mensaje, parent, false);
-        return null;
+        View v = LayoutInflater.from(context).inflate(R.layout.vista_mensaje,parent,false);
+        return new ContenidoMensaje(v);
     }
 
     @Override
@@ -41,11 +41,10 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
         holder.getNombre().setText(mensajeList.get(position).getNombre());
         holder.getMensaje().setText(mensajeList.get(position).getMensaje());
         holder.getFecha().setText(mensajeList.get(position).getFecha());
-
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mensajeList.size();
     }
 }

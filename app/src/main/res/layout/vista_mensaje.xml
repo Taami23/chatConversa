@@ -19,25 +19,30 @@
                 android:src="@mipmap/ic_launcher">
             </de.hdodenhof.circleimageview.CircleImageView>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/nombre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hola"
-                    android:layout_weight="1"></TextView>
+                    android:layout_weight="1"
+                    android:text="Hola"></TextView>
+
                 <TextView
                     android:id="@+id/mensaje"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Son las tanto"></TextView>
             </LinearLayout>
+
             <TextView
                 android:id="@+id/fecha"
                 android:layout_width="wrap_content"
