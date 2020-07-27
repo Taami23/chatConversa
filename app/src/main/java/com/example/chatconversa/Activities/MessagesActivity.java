@@ -55,7 +55,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
     private ServicioWeb servicioWeb;
     private RecyclerView mensajes;
     private CircleImageView fotoPerfil;
-    private ArmarMensaje armador;
+    private ArmarMensaje armador, armador2;
     private SharedPreferences preferences;
     private String token;
     private String username;
@@ -75,7 +75,8 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         send = findViewById(R.id.sendMessage);
         mensajes = findViewById(R.id.messages);
         fotoPerfil = findViewById(R.id.fotoPerfil);
-        armador = new ArmarMensaje(this);
+        armador = new ArmarMensaje(this,1);
+        armador2 = new ArmarMensaje(this, 2);
         LinearLayoutManager linear = new LinearLayoutManager(this);
         mensajes.setLayoutManager(linear);
         mensajes.setAdapter(armador);
@@ -128,7 +129,11 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                                     .setAutoCancel(true);
 
-
+                            armador.addMensaje(new Mensaje(object.getJSONObject("data").getJSONObject("message")
+                                    .getJSONObject("user").getString("username"),
+                                    object.getJSONObject("data").getJSONObject("message").getString("message"),
+                                    object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("user_image"),
+                                    object.getJSONObject("data").getJSONObject("message").getString("date")));
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -242,7 +247,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                     Log.d("CODIGO", ""+response.code());
                     if(response.body() != null && response.code()== 200){
                         RespuestaWSSendMessage respuestaWSSendMessage = response.body();
-                        armador.addMensaje(new Mensaje(username,mensaje.getText().toString(), respuestaWSSendMessage.getData().getUser().getUser_image(), respuestaWSSendMessage.getData().getDate()));
+                        armador2.addMensaje(new Mensaje(username,mensaje.getText().toString(), respuestaWSSendMessage.getData().getUser().getUser_image(), respuestaWSSendMessage.getData().getDate()));
                     }else if (response.code()==400){
                         try{
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
