@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+
 import com.example.chatconversa.ArmarMensaje;
 import com.example.chatconversa.Interfaces.ServicioWeb;
 import com.example.chatconversa.Objetos.Data;
@@ -50,7 +52,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MessagesActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button profile, send;
+    private Button profile;
+    private ImageButton send;
     private EditText mensaje;
     private ServicioWeb servicioWeb;
     private RecyclerView mensajes;
@@ -112,23 +115,20 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void run() {
                         Log.d("PUSHER", "Nuevo mensaje: "+event.toString());
-                        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(MessagesActivity.this,CHANNEL_ID)
-                                .setContentIntent(pendingIntent)
-                                .setSmallIcon(R.drawable.notification_icon)
-                                .setContentTitle("Notification")
-                                .setContentText("Mensaje")
-                                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                .setAutoCancel(true);
+                        NotificationCompat.Builder nBuilder = null;
                         try {
                             JSONObject object = new JSONObject(event.toString());
-                            nBuilder = new NotificationCompat.Builder(MessagesActivity.this,CHANNEL_ID)
-                                    .setContentIntent(pendingIntent)
-                                    .setSmallIcon(R.drawable.notification_icon)
-                                    .setContentTitle("Mensaje de: "+object.getJSONObject("data").getJSONObject("message")
-                                            .getJSONObject("user").getString("username"))
-                                    .setContentText(object.getJSONObject("data").getJSONObject("message").getString("message"))
-                                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                    .setAutoCancel(true);
+                            Log.d("User", object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username")+ " usuario: "+ username);
+                            if(!object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username").equalsIgnoreCase(username)){
+                                nBuilder = new NotificationCompat.Builder(MessagesActivity.this,CHANNEL_ID)
+                                        .setContentIntent(pendingIntent)
+                                        .setSmallIcon(R.drawable.notification_icon)
+                                        .setContentTitle("Mensaje de: "+object.getJSONObject("data").getJSONObject("message")
+                                                .getJSONObject("user").getString("username"))
+                                        .setContentText(object.getJSONObject("data").getJSONObject("message").getString("message"))
+                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                        .setAutoCancel(true);
+                            }
 
                             armador.addMensaje(new Mensaje(object.getJSONObject("data").getJSONObject("message")
                                     .getJSONObject("user").getString("username"),
@@ -136,13 +136,13 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                                     object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("user_image"),
                                     object.getJSONObject("data").getJSONObject("message").getString("date")));
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-                        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MessagesActivity.this);
-                        notificationManagerCompat.notify(5, nBuilder.build());
+                        if (nBuilder != null){
+                            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MessagesActivity.this);
+                            notificationManagerCompat.notify(5, nBuilder.build());
+                        }
                     }
                 });
             }
@@ -239,48 +239,51 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
     public void servicioSend(){
         String pathPhoto="";
         File archivoImage = new File(pathPhoto);
-        RequestBody file = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImage);
-        MultipartBody.Part archivo = MultipartBody.Part.create(file);
+        //RequestBody file = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImage);
+        //MultipartBody.Part archivo = MultipartBody.Part.create(file);
         Double latitude= 32.40;
         Double longitude= 33.40;
-        final Call<RespuestaWSSendMessage> respuestaWSSendMessageCall= servicioWeb.send("Bearer "+token, user_id, username,mensaje.getText().toString(),latitude, longitude);
-        respuestaWSSendMessageCall.enqueue(new Callback<RespuestaWSSendMessage>() {
-            @Override
-            public void onResponse(Call<RespuestaWSSendMessage> call, Response<RespuestaWSSendMessage> response) {
-                Log.d("TOKEN", token);
-                if(response != null){
-                    Log.d("CODIGO", ""+response.code());
-                    if(response.body() != null && response.code()== 200){
-                        RespuestaWSSendMessage respuestaWSSendMessage = response.body();
-                        armador.addMensaje(new Mensaje(username,mensaje.getText().toString(), respuestaWSSendMessage.getData().getUser().getUser_image(), respuestaWSSendMessage.getData().getDate()));
-                    }else if (response.code()==400){
-                        try{
-                            JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            JSONObject error = jObjError.getJSONObject("errors");
-                            JSONArray names = error.names();
-                            String mensaje = jObjError.getString("message");
+        MultipartBody.Part file = null;
+        RequestBody user = RequestBody.create(MediaType.parse("multipart/form-data"), user_id);
+        RequestBody user_name = RequestBody.create(MediaType.parse("multipart/form-data"), username);
+        if(!mensaje.getText().toString().equalsIgnoreCase("") || file != null ){
+            final Call<RespuestaWSSendMessage> respuestaWSSendMessageCall= servicioWeb.send("Bearer "+token, user, user_name,mensaje.getText().toString(),file,latitude, longitude);
+            respuestaWSSendMessageCall.enqueue(new Callback<RespuestaWSSendMessage>() {
+                @Override
+                public void onResponse(Call<RespuestaWSSendMessage> call, Response<RespuestaWSSendMessage> response) {
+                    Log.d("TOKEN", token);
+                    if(response != null){
+                        Log.d("CODIGO", ""+response.code());
+                        if(response.body() != null && response.code()== 200){
+                            Log.d("EXITO", "Mensaje enviado con exito");
+                        }else if (response.code()==400){
+                            try{
+                                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                JSONObject error = jObjError.getJSONObject("errors");
+                                JSONArray names = error.names();
+                                String mensaje = jObjError.getString("message");
 
-                            for (int i = 0; i < names.length(); i++) {
-                                String nombreError = names.getString(i);
-                                String message = error.getJSONArray(names.getString(i)).getString(0);
-                                Log.d("Errores Registro", names.getString(i) + ':' + error.getJSONArray(names.getString(i)).getString(0));
-                                switch (nombreError) {
-                                    case "username":
+                                for (int i = 0; i < names.length(); i++) {
+                                    String nombreError = names.getString(i);
+                                    String message = error.getJSONArray(names.getString(i)).getString(0);
+                                    Log.d("Errores Registro", names.getString(i) + ':' + error.getJSONArray(names.getString(i)).getString(0));
+                                    switch (nombreError) {
+                                        case "username":
 
-                                        break;
-                                    case "user_id":
+                                            break;
+                                        case "user_id":
 
-                                        break;
+                                            break;
+                                    }
                                 }
+                            }catch (JSONException | IOException e){
+                                e.printStackTrace();
                             }
-                        }catch (JSONException | IOException e){
-                            e.printStackTrace();
-                        }
-                    }else if(response.code()==401){
-                        try{
-                            JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            String mensaje = jObjError.getString("message");
-                            Log.d("Retroit Error", mensaje);
+                        }else if(response.code()==401){
+                            try{
+                                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                String mensaje = jObjError.getString("message");
+                                Log.d("Retroit Error", mensaje);
                             /*new MaterialAlertDialogBuilder(MessagesActivity.this)
                                     .setTitle("Upps! Ha ocurrido un error")
                                     .setMessage(mensaje)
@@ -290,18 +293,19 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                                         }
                                     })
                                     .show();*/
-                        }catch (JSONException | IOException e){
-                            e.printStackTrace();
+                            }catch (JSONException | IOException e){
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<RespuestaWSSendMessage> call, Throwable t) {
-                Log.d("Failure", t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<RespuestaWSSendMessage> call, Throwable t) {
+                    Log.d("Failure", t.getMessage());
+                }
+            });
+        }
     }
 
     private void getPreferences(){
