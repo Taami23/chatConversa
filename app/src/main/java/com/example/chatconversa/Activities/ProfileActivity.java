@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.chatconversa.Interfaces.ServicioWeb;
@@ -24,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,12 +36,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button cerrarSesion;
     private ServicioWeb servicioWeb;
     private ImageButton atras;
+    private ImageButton agregarImagen;
     private TextView username;
     private TextView name;
     private TextView lastname;
     private TextView run;
     private TextView email;
-    private ImageView image;
+    private CircleImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +57,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         email = findViewById(R.id.email);
         image = findViewById(R.id.image);
         atras = findViewById(R.id.atras);
+        agregarImagen = findViewById(R.id.agregarImagen);
 
         preferences = getSharedPreferences(LoginActivity.CREDENTIALS, MODE_PRIVATE);
+        Log.d("Imagen","poto" + preferences.getString("image", "no image"));
         username.setText(preferences.getString("username", "username no encontrado").toUpperCase());
         name.setText("NOMBRE: " + preferences.getString("name", "name no encontrado").toUpperCase());
         lastname.setText("APELLIDO: " + preferences.getString("lastname", "lastname no encontrado").toUpperCase());
         run.setText("RUN: " + preferences.getString("run", "run no encontrado").toUpperCase());
         email.setText("CORREO: " + preferences.getString("email", "email no encontrado").toUpperCase());
 
-
+        agregarImagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initPhoto();
+            }
+        });
         atras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +195,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private  void initMessages(){
         Intent messages = new Intent(this, MessagesActivity.class);
         startActivity(messages);
+        finish();
+    }
+    private  void initPhoto(){
+        Intent photo = new Intent(this, PhotoActivity.class);
+        startActivity(photo);
         finish();
     }
 

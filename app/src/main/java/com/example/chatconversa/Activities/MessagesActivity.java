@@ -55,7 +55,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
     private ServicioWeb servicioWeb;
     private RecyclerView mensajes;
     private CircleImageView fotoPerfil;
-    private ArmarMensaje armador, armador2;
+    private ArmarMensaje armador;
     private SharedPreferences preferences;
     private String token;
     private String username;
@@ -66,6 +66,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
+        getPreferences();
         createChannel();
         Intent intent = new Intent(this, MessagesActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(MessagesActivity.this, 0, intent, 0);
@@ -75,14 +76,11 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         send = findViewById(R.id.sendMessage);
         mensajes = findViewById(R.id.messages);
         fotoPerfil = findViewById(R.id.fotoPerfil);
-        armador = new ArmarMensaje(this,1);
-        armador2 = new ArmarMensaje(this, 2);
+        armador = new ArmarMensaje(this, username);
         LinearLayoutManager linear = new LinearLayoutManager(this);
         mensajes.setLayoutManager(linear);
         mensajes.setAdapter(armador);
         PusherOptions options = new PusherOptions();
-
-        getPreferences();
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/message/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         servicioWeb = retrofit.create(ServicioWeb.class);
@@ -110,6 +108,9 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         channel.bind("my-event", new SubscriptionEventListener() {
             @Override
             public void onEvent(PusherEvent event) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
                         Log.d("PUSHER", "Nuevo mensaje: "+event.toString());
                         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(MessagesActivity.this,CHANNEL_ID)
                                 .setContentIntent(pendingIntent)
@@ -135,12 +136,15 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                                     object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("user_image"),
                                     object.getJSONObject("data").getJSONObject("message").getString("date")));
 
+
                         } catch (JSONException e) {
                             e.printStackTrace();
-                }
+                        }
 
-                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MessagesActivity.this);
-                notificationManagerCompat.notify(5, nBuilder.build());
+                        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MessagesActivity.this);
+                        notificationManagerCompat.notify(5, nBuilder.build());
+                    }
+                });
             }
         });
         send.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +163,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                 setScrollBar();
             }
         });
+
     }
 
     @Override
@@ -178,7 +183,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                         RespuestaWSMessages respuestaWSMessages = response.body();
                         Data[] datas = respuestaWSMessages.getData();
                         for (int i=datas.length-1; i>=0;i--){
-                            armador.addMensaje(new Mensaje(datas[i].getUser().getUsername(),datas[i].getMessage(), datas[i].getUser().getUser_image(), datas[i].getDate()));
+                                armador.addMensaje(new Mensaje(datas[i].getUser().getUsername(),datas[i].getMessage(), datas[i].getUser().getUser_image(), datas[i].getDate()));
                         }
                     }else if (response.code()==400){
                         try{
@@ -247,7 +252,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                     Log.d("CODIGO", ""+response.code());
                     if(response.body() != null && response.code()== 200){
                         RespuestaWSSendMessage respuestaWSSendMessage = response.body();
-                        armador2.addMensaje(new Mensaje(username,mensaje.getText().toString(), respuestaWSSendMessage.getData().getUser().getUser_image(), respuestaWSSendMessage.getData().getDate()));
+                        armador.addMensaje(new Mensaje(username,mensaje.getText().toString(), respuestaWSSendMessage.getData().getUser().getUser_image(), respuestaWSSendMessage.getData().getDate()));
                     }else if (response.code()==400){
                         try{
                             JSONObject jObjError = new JSONObject(response.errorBody().string());

@@ -8,6 +8,7 @@ import com.example.chatconversa.Respuestas.RespuestaWSRegister;
 import com.example.chatconversa.Respuestas.RespuestaWSSendMessage;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -50,6 +51,6 @@ public interface ServicioWeb {
 
     @Multipart
     @POST("load/image")
-    Call<RespuestaWSImagen> image(@Header("Authorization") String token, @Part("user_id") String user_id,
-                                  @Part("username") String username, @Part MultipartBody.Part user_image);
+    Call<RespuestaWSImagen> image(@Header("Authorization") String token, @Part("user_id") RequestBody user_id,
+                                  @Part("username") RequestBody username, @Part MultipartBody.Part user_image);
 }

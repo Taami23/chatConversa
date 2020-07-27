@@ -1,7 +1,8 @@
 package com.example.chatconversa;
 
 import android.content.Context;
-import android.content.Intent;
+
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +15,20 @@ import com.example.chatconversa.Objetos.Mensaje;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
 
+    public static final int MSG_LEFT = 0;
+    public static final int MSG_RIGHT = 1;
     private List<Mensaje> mensajeList = new ArrayList<>();
     private Context context;
-    private Integer vista;
+    private String user;
 
-    public ArmarMensaje(Context context, Integer vista) {
+    SharedPreferences preferences;
+
+    public ArmarMensaje(Context context, String user) {
         this.context = context;
-        this.vista = vista;
+        this.user = user;
     }
 
     public void addMensaje(Mensaje m){
@@ -35,11 +41,11 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
     @Override
     public ContenidoMensaje onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
-        if (vista == 1){
+        if (viewType == MSG_LEFT){
             v = LayoutInflater.from(context).inflate(R.layout.vista_mensaje,parent,false);
             return new ContenidoMensaje(v);
         }else{
-            v = LayoutInflater.from(context).inflate(R.layout.vista_mensaje,parent,false);
+            v = LayoutInflater.from(context).inflate(R.layout.vista_mensaje_derecha,parent,false);
             return new ContenidoMensaje(v);
         }
 
@@ -55,5 +61,14 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
     @Override
     public int getItemCount() {
         return mensajeList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(mensajeList.get(position).getNombre().equalsIgnoreCase(user)){
+            return MSG_RIGHT;
+        }else {
+            return MSG_LEFT;
+        }
     }
 }

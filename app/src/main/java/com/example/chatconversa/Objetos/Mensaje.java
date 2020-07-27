@@ -7,6 +7,7 @@ public class Mensaje {
     private String fecha;
 
     public Mensaje() {
+
     }
 
     public Mensaje(String nombre, String mensaje, String fotoPerfil, String fecha) {

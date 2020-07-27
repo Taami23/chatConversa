@@ -27,12 +27,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"></TextView>
 
+
         <TextView
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="28dp"
+            android:fontFamily="@font/opensanscondensed"
             android:text="JOHN DOE"
             android:textColor="@color/md_white_1000"
             android:textSize="30dp"
@@ -42,9 +44,9 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7"
-            app:layout_constraintVertical_bias="0.118"></TextView>
+            app:layout_constraintVertical_bias="0.0"></TextView>
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/image"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -55,18 +57,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/username"
             app:layout_constraintVertical_bias="0.0"
-            tools:srcCompat="@drawable/user" />
+            android:src="@drawable/user" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/agregarImagen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.749"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.101"
+            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.812"
             app:srcCompat="@android:drawable/ic_menu_add" />
 
         <ImageButton
@@ -75,11 +77,11 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView7"
-            app:layout_constraintHorizontal_bias="0.145"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.065"
-            app:srcCompat="@drawable/back_24dp" />
+            app:layout_constraintVertical_bias="0.018"
+            app:srcCompat="@drawable/back_white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

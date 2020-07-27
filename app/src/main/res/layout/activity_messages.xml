@@ -6,57 +6,48 @@
     android:layout_height="match_parent"
     android:background="#2A2A2B"
     android:orientation="vertical"
-    tools:context=".Activities.MessagesActivity">q
+    tools:context=".Activities.MessagesActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#6B51A5"
-        android:orientation="horizontal"
-        android:weightSum="5">
+        android:background="@color/md_purple_800"
+        android:orientation="horizontal">
         <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_margin="8dp"
             android:id="@+id/fotoPerfil"
             android:layout_width="50sp"
-            android:layout_height="match_parent"
+            android:layout_height="50sp"
             android:src="@mipmap/ic_launcher">
 
         </de.hdodenhof.circleimageview.CircleImageView>
-        <LinearLayout
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="3">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="CHAT"
-                android:background="@color/md_yellow_200"
-                android:textColor="@color/md_white_1000"
-                android:fontFamily="@font/my_fonts"
-                android:textSize="40dp"
-                android:gravity="right"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="102dp"
+            android:layout_toRightOf="@+id/fotoPerfil"
+            android:fontFamily="@font/my_fonts"
+            android:text="CHAT"
+            android:textColor="@color/md_white_1000"
+            android:textSize="40dp"></TextView>
 
-                ></TextView>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:orientation="vertical">
-
-            <Button
+        <Button
                 android:id="@+id/profileButton"
+                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:textColorHint="@color/md_white_1000"
-                android:layout_gravity="right"
-                android:hint="Holi"
+                android:layout_centerVertical="true"
+                android:hint="Perfil"
+                android:layout_margin="8dp"
                 android:textSize="25dp"
+                android:drawableLeft="@drawable/identity"
                 app:maxImageSize="35dp" />
 
-        </LinearLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messages"
         android:layout_width="match_parent"
@@ -72,7 +63,8 @@
             android:id="@+id/textMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="10dp"
             android:hint="Escribe un mensaje"
             android:textColor="@color/md_white_1000"
             android:textSize="25dp"
@@ -85,6 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Enviar"
+            android:layout_margin="8dp"
             android:textSize="25dp"
             android:textColorHint="@color/md_white_1000">
 

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/fotoMensaje"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/ic_launcher"
+            android:visibility="gone"
+            cardview:civ_border_width="2dp"
+            cardview:civ_border_color="@color/md_black_1000"
+            ></de.hdodenhof.circleimageview.CircleImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hola"
+            android:padding="8dp"
+            android:textColor="@color/md_white_1000"
+            android:id="@+id/nombre"
+            android:visibility="gone"
+            android:background="@drawable/mensaje_derecha"
+            ></TextView>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="8dp"
+        android:background="@drawable/mensaje_derecha">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hola"
+            android:padding="8dp"
+            android:textSize="18dp"
+            android:textColor="@color/md_white_1000"
+            android:id="@+id/mensaje"
+            android:background="@drawable/mensaje_derecha"
+            ></TextView>
+    </LinearLayout>
+        <TextView
+            android:id="@+id/fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Usuaerio"></TextView>
+    </RelativeLayout>
+
+</RelativeLayout>
