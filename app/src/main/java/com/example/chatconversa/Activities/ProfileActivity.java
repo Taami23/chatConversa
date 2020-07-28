@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.chatconversa.Interfaces.ServicioWeb;
 import com.example.chatconversa.R;
 import com.example.chatconversa.Respuestas.RespuestaWSLoguot;
@@ -66,7 +67,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         lastname.setText("APELLIDO: " + preferences.getString("lastname", "lastname no encontrado").toUpperCase());
         run.setText("RUN: " + preferences.getString("run", "run no encontrado").toUpperCase());
         email.setText("CORREO: " + preferences.getString("email", "email no encontrado").toUpperCase());
-
+        if(preferences.getString("image", "no image").equalsIgnoreCase("no image")){
+            image.setImageResource(R.drawable.user);
+        }else{
+            Glide.with(this).load(preferences.getString("image", "no image")).into(image);
+        }
         agregarImagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

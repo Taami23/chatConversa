@@ -58,6 +58,7 @@ public class PhotoActivity extends AppCompatActivity {
     private String token;
     private String username;
     private String user_id;
+    private String user_image;
 
     private final static int REQUEST_PERMISSION = 1001;
     private final static int REQUEST_CAMERA = 1002;
@@ -139,11 +140,11 @@ public class PhotoActivity extends AppCompatActivity {
                                     .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
+
                                             initProfile();
                                         }
                                     })
                                     .show();
-                        initProfile();
                     }else if(response.code()==400){
                         try{
                             JSONObject jObjError = new JSONObject(response.errorBody().string());

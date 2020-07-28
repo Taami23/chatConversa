@@ -48,7 +48,6 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
             v = LayoutInflater.from(context).inflate(R.layout.vista_mensaje_derecha,parent,false);
             return new ContenidoMensaje(v);
         }
-
     }
 
     @Override
