@@ -16,7 +16,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_marginTop="12dp"
             android:layout_marginLeft="10dp"
-            android:id="@+id/fotoPerfil"
+            android:id="@+id/atrasMensaje"
             android:layout_width="50sp"
             android:layout_height="50sp"
             android:src="@mipmap/ic_launcher">
@@ -29,7 +29,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="102dp"
-            android:layout_toRightOf="@+id/fotoPerfil"
+            android:layout_toRightOf="@+id/atrasMensaje"
             android:fontFamily="@font/my_fonts"
             android:text="CHAT"
             android:textColor="@color/md_white_1000"

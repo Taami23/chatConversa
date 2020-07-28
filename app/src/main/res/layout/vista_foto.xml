@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/md_purple_800"
+        android:orientation="vertical"
+        android:id="@+id/layout">
+        <ImageButton
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/atrasMensaje"
+            android:layout_centerVertical="true"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:src="@drawable/back_white" >
+
+        </ImageButton>
+
+        <TextView
+            android:id="@+id/nombreUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/atrasMensaje"
+            android:fontFamily="@font/my_fonts"
+            android:text="Usuario"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/md_white_1000"
+            android:textSize="20dp"></TextView>
+        <TextView
+            android:id="@+id/fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/my_fonts"
+            android:layout_toEndOf="@+id/nombreUsuario"
+            android:text="fecha"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/md_white_1000"
+            android:textSize="20dp"></TextView>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/Imangencita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout"
+        >
+
+    </ImageView>
+</RelativeLayout>

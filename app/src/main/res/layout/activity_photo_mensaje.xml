@@ -21,7 +21,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="102dp"
-            android:layout_toRightOf="@+id/fotoPerfil"
+            android:layout_toRightOf="@+id/atrasMensaje"
             android:fontFamily="@font/my_fonts"
             android:text="IMAGEN"
             android:textColor="@color/md_white_1000"

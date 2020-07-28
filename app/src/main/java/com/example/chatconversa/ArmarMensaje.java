@@ -43,10 +43,10 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
         View v;
         if (viewType == MSG_LEFT){
             v = LayoutInflater.from(context).inflate(R.layout.vista_mensaje,parent,false);
-            return new ContenidoMensaje(v);
+            return new ContenidoMensaje(v, context);
         }else{
             v = LayoutInflater.from(context).inflate(R.layout.vista_mensaje_derecha,parent,false);
-            return new ContenidoMensaje(v);
+            return new ContenidoMensaje(v, context);
         }
     }
 
@@ -60,6 +60,8 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
         }else{
             holder.getMensaje().setText(mensajeList.get(position).getMensaje());
         }
+        holder.getUsuario().setText(mensajeList.get(position).getNombre());
+        holder.getFechaFoto().setText(mensajeList.get(position).getFecha());
         holder.getFecha().setText(mensajeList.get(position).getFecha());
         if(mensajeList.get(position).getFotoPerfil().equalsIgnoreCase("")){
             holder.getFotoPerfil().setImageResource(R.drawable.user);
@@ -70,6 +72,7 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
             holder.getFotoMensaje().setVisibility(View.GONE);
         }else{
             Glide.with(context).load(mensajeList.get(position).getFotoMensaje()).into(holder.getFotoMensaje());
+            Glide.with(context).load(mensajeList.get(position).getFotoMensaje()).into(holder.getImagen());
         }
 
     }
