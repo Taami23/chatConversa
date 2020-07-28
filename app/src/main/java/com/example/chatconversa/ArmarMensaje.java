@@ -53,7 +53,13 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
     @Override
     public void onBindViewHolder(@NonNull ContenidoMensaje holder, int position) {
         holder.getNombre().setText(mensajeList.get(position).getNombre());
-        holder.getMensaje().setText(mensajeList.get(position).getMensaje());
+        if(mensajeList.get(position).getMensaje() == null ){
+            holder.getMensaje().setVisibility(View.GONE);
+        }else if (mensajeList.get(position).getMensaje().equalsIgnoreCase("")){
+            holder.getMensaje().setVisibility(View.GONE);
+        }else{
+            holder.getMensaje().setText(mensajeList.get(position).getMensaje());
+        }
         holder.getFecha().setText(mensajeList.get(position).getFecha());
         if(mensajeList.get(position).getFotoPerfil().equalsIgnoreCase("")){
             holder.getFotoPerfil().setImageResource(R.drawable.user);

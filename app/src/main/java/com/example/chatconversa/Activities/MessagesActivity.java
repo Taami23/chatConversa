@@ -104,6 +104,10 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         LinearLayoutManager linear = new LinearLayoutManager(this);
         mensajes.setLayoutManager(linear);
         mensajes.setAdapter(armador);
+        mensajes.setHasFixedSize(true);
+        mensajes.setItemViewCacheSize(30);
+        mensajes.setDrawingCacheEnabled(true);
+        mensajes.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         PusherOptions options = new PusherOptions();
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/message/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
