@@ -1,6 +1,7 @@
 package com.example.chatconversa;
 
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,14 +12,24 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ContenidoMensaje extends RecyclerView.ViewHolder {
 
     private TextView nombre, mensaje, fecha;
-    private CircleImageView fotoMensaje;
+    private CircleImageView fotoPerfil;
+    private ImageButton fotoMensaje;
     public ContenidoMensaje(@NonNull View itemView) {
         super(itemView);
 
         nombre = itemView.findViewById(R.id.nombre);
         mensaje = itemView.findViewById(R.id.mensaje);
         fecha = itemView.findViewById(R.id.fecha);
+        fotoPerfil = itemView.findViewById(R.id.fotoPerfil);
         fotoMensaje = itemView.findViewById(R.id.fotoMensaje);
+    }
+
+    public ImageButton getFotoMensaje() {
+        return fotoMensaje;
+    }
+
+    public void setFotoMensaje(ImageButton fotoMensaje) {
+        this.fotoMensaje = fotoMensaje;
     }
 
     public TextView getNombre() {
@@ -45,11 +56,11 @@ public class ContenidoMensaje extends RecyclerView.ViewHolder {
         this.fecha = fecha;
     }
 
-    public CircleImageView getFotoMensaje() {
-        return fotoMensaje;
+    public CircleImageView getFotoPerfil() {
+        return fotoPerfil;
     }
 
-    public void setFotoMensaje(CircleImageView fotoMensaje) {
-        this.fotoMensaje = fotoMensaje;
+    public void setFotoPerfil(CircleImageView fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
     }
 }

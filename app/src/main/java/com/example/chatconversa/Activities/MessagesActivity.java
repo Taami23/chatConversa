@@ -1,8 +1,13 @@
 package com.example.chatconversa.Activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,13 +16,19 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.chatconversa.ArmarMensaje;
 import com.example.chatconversa.Interfaces.ServicioWeb;
@@ -40,6 +51,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -52,7 +66,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MessagesActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button profile;
+    private ImageButton profile;
+    private ImageButton insertarFoto;
     private ImageButton send;
     private EditText mensaje;
     private ServicioWeb servicioWeb;
@@ -63,7 +78,12 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
     private String token;
     private String username;
     private String user_id;
+    private String pathPhoto;
     private static final String CHANNEL_ID = "PUSHER_MSG";
+    private final static int REQUEST_PERMISSION = 1001;
+    private final static int REQUEST_CAMERA = 1002;
+    private final static String[] PERMISSION_REQUIRED =
+            new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE" };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getSupportActionBar().hide();
@@ -73,6 +93,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         createChannel();
         Intent intent = new Intent(this, MessagesActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(MessagesActivity.this, 0, intent, 0);
+        insertarFoto = findViewById(R.id.insertarFoto);
         profile = findViewById(R.id.profileButton);
         profile.setOnClickListener(this);
         mensaje = findViewById(R.id.textMessage);
@@ -88,65 +109,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                 .addConverterFactory(GsonConverterFactory.create()).build();
         servicioWeb = retrofit.create(ServicioWeb.class);
         servicio();
-        options.setCluster("us2");
-        Pusher pusher = new Pusher("46e8ded9439a0fef8cbc", options);
-        pusher.connect(new ConnectionEventListener() {
-            @Override
-            public void onConnectionStateChange(ConnectionStateChange change) {
-                Log.d("PUSHER", "Estado actual: "+change.getCurrentState().name()
-                        +"Estado previo: "
-                        +change.getPreviousState().name());
-            }
-
-            @Override
-            public void onError(String message, String code, Exception e) {
-                Log.d("PUHSER", "ERROR PUSHER\n"
-                        +"Mensaje: " + message + "\n"
-                        +"Código: "+ code + "\n"
-                        +"e: "+ e + "\n");
-            }
-        }, ConnectionState.ALL);
-
-        Channel channel = pusher.subscribe("my-channel");
-        channel.bind("my-event", new SubscriptionEventListener() {
-            @Override
-            public void onEvent(PusherEvent event) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("PUSHER", "Nuevo mensaje: "+event.toString());
-                        NotificationCompat.Builder nBuilder = null;
-                        try {
-                            JSONObject object = new JSONObject(event.toString());
-                            Log.d("User", object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username")+ " usuario: "+ username);
-                            if(!object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username").equalsIgnoreCase(username)){
-                                nBuilder = new NotificationCompat.Builder(MessagesActivity.this,CHANNEL_ID)
-                                        .setContentIntent(pendingIntent)
-                                        .setSmallIcon(R.drawable.notification_icon)
-                                        .setContentTitle("Mensaje de: "+object.getJSONObject("data").getJSONObject("message")
-                                                .getJSONObject("user").getString("username"))
-                                        .setContentText(object.getJSONObject("data").getJSONObject("message").getString("message"))
-                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                        .setAutoCancel(true);
-                            }
-
-                            armador.addMensaje(new Mensaje(object.getJSONObject("data").getJSONObject("message")
-                                    .getJSONObject("user").getString("username"),
-                                    object.getJSONObject("data").getJSONObject("message").getString("message"),
-                                    object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("user_image"),
-                                    object.getJSONObject("data").getJSONObject("message").getString("date")));
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        if (nBuilder != null){
-                            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MessagesActivity.this);
-                            notificationManagerCompat.notify(5, nBuilder.build());
-                        }
-                    }
-                });
-            }
-        });
+        notifications(options, pendingIntent);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,7 +117,6 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                 mensaje.setText("");
             }
         });
-
 
         armador.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
@@ -164,6 +126,92 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+        if(verifyPermission()){
+            startCameraInit();
+        }else{
+            ActivityCompat.requestPermissions(this, PERMISSION_REQUIRED, REQUEST_PERMISSION);
+        }
+
+    }
+    private boolean verifyPermission(){
+        for(String permission : PERMISSION_REQUIRED){
+            if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED){
+                return false;
+            }
+        }
+        return true;
+    }
+    private void startCameraInit(){
+        insertarFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startCamera();
+            }
+        });
+    }
+
+    private void startCamera(){
+        if(false){
+            Intent iniciarCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if(iniciarCamara.resolveActivity(getPackageManager()) != null){
+                startActivityForResult(iniciarCamara, REQUEST_CAMERA);
+            }
+        }else{
+            Intent iniciarCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if(iniciarCamara.resolveActivity(getPackageManager()) != null){
+                File photoFile = null;
+                try{
+                    photoFile = createFilePhoto();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if(photoFile != null){
+                    Uri photoUri = FileProvider.getUriForFile(this,
+                            "com.example.chatconversa.fileprovider",
+                            photoFile);
+                    iniciarCamara.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                    startActivityForResult(iniciarCamara, REQUEST_CAMERA);
+                }
+            }
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_CAMERA && resultCode == RESULT_OK){
+            SharedPreferences.Editor edit = preferences.edit();
+            edit.putString("pathPhoto", pathPhoto);
+            edit.commit();
+            initPhotoMensaje();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == REQUEST_PERMISSION){
+            if(verifyPermission()){
+                startCameraInit();
+            }else{
+                Toast.makeText(this, "Los permisos deben ser autorizados", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private File createFilePhoto() throws IOException {
+        String timestamp =  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String file_name = "JPEG_" + timestamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File photo = File.createTempFile(
+                file_name,
+                ".jpg",
+                storageDir
+        );
+        pathPhoto = photo.getAbsolutePath();
+        return photo;
     }
 
     @Override
@@ -181,9 +229,10 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                     Log.d("CODIGO", ""+response.code());
                     if(response.body() != null && response.code()== 200){
                         RespuestaWSMessages respuestaWSMessages = response.body();
+                        Log.d("MENSAJITOS", respuestaWSMessages.toString());
                         Data[] datas = respuestaWSMessages.getData();
                         for (int i=datas.length-1; i>=0;i--){
-                                armador.addMensaje(new Mensaje(datas[i].getUser().getUsername(),datas[i].getMessage(), datas[i].getUser().getUser_image(), datas[i].getDate()));
+                                armador.addMensaje(new Mensaje(datas[i].getUser().getUsername(),datas[i].getMessage(), datas[i].getUser().getUser_image(), datas[i].getDate(), datas[i].getImage()));
                         }
                     }else if (response.code()==400){
                         try{
@@ -334,5 +383,73 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    private void notifications(PusherOptions options, PendingIntent pendingIntent){
+        options.setCluster("us2");
+        Pusher pusher = new Pusher("46e8ded9439a0fef8cbc", options);
+        pusher.connect(new ConnectionEventListener() {
+            @Override
+            public void onConnectionStateChange(ConnectionStateChange change) {
+                Log.d("PUSHER", "Estado actual: "+change.getCurrentState().name()
+                        +"Estado previo: "
+                        +change.getPreviousState().name());
+            }
+
+            @Override
+            public void onError(String message, String code, Exception e) {
+                Log.d("PUHSER", "ERROR PUSHER\n"
+                        +"Mensaje: " + message + "\n"
+                        +"Código: "+ code + "\n"
+                        +"e: "+ e + "\n");
+            }
+        }, ConnectionState.ALL);
+
+        Channel channel = pusher.subscribe("my-channel");
+        channel.bind("my-event", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(PusherEvent event) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("PUSHER", "Nuevo mensaje: "+event.toString());
+                        NotificationCompat.Builder nBuilder = null;
+                        try {
+                            JSONObject object = new JSONObject(event.toString());
+                            Log.d("User", object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username")+ " usuario: "+ username);
+                            if(!object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username").equalsIgnoreCase(username)){
+                                nBuilder = new NotificationCompat.Builder(MessagesActivity.this,CHANNEL_ID)
+                                        .setContentIntent(pendingIntent)
+                                        .setSmallIcon(R.drawable.notification_icon)
+                                        .setContentTitle("Mensaje de: "+object.getJSONObject("data").getJSONObject("message")
+                                                .getJSONObject("user").getString("username"))
+                                        .setContentText(object.getJSONObject("data").getJSONObject("message").getString("message"))
+                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                        .setAutoCancel(true);
+                            }
+
+                            armador.addMensaje(new Mensaje(object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username"),
+                                    object.getJSONObject("data").getJSONObject("message").getString("message"),
+                                    object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("user_image"),
+                                    object.getJSONObject("data").getJSONObject("message").getString("date"),
+                                    object.getJSONObject("data").getJSONObject("message").getString("image")));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (nBuilder != null){
+                            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MessagesActivity.this);
+                            notificationManagerCompat.notify(5, nBuilder.build());
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    private void initPhotoMensaje(){
+        Intent photoMensaje = new Intent(this, PhotoMensajeActivity.class);
+        startActivity(photoMensaje);
+        finish();
     }
 }

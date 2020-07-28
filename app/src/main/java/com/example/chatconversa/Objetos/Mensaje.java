@@ -5,16 +5,26 @@ public class Mensaje {
     private String mensaje;
     private String fotoPerfil;
     private String fecha;
+    private String fotoMensaje;
 
     public Mensaje() {
 
     }
 
-    public Mensaje(String nombre, String mensaje, String fotoPerfil, String fecha) {
+    public Mensaje(String nombre, String mensaje, String fotoPerfil, String fecha, String fotoMensaje) {
         this.nombre = nombre;
         this.mensaje = mensaje;
         this.fotoPerfil = fotoPerfil;
         this.fecha = fecha;
+        this.fotoMensaje = fotoMensaje;
+    }
+
+    public String getFotoMensaje() {
+        return fotoMensaje;
+    }
+
+    public void setFotoMensaje(String fotoMensaje) {
+        this.fotoMensaje = fotoMensaje;
     }
 
     public String getNombre() {
@@ -56,6 +66,7 @@ public class Mensaje {
                 ", mensaje='" + mensaje + '\'' +
                 ", fotoPerfil='" + fotoPerfil + '\'' +
                 ", fecha='" + fecha + '\'' +
+                ", fotoMensaje='" + fotoMensaje + '\'' +
                 '}';
     }
 }

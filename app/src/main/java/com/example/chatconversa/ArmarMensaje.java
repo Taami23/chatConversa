@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.chatconversa.Objetos.Mensaje;
 
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
     private Context context;
     private String user;
 
-    SharedPreferences preferences;
 
     public ArmarMensaje(Context context, String user) {
         this.context = context;
@@ -55,6 +55,17 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
         holder.getNombre().setText(mensajeList.get(position).getNombre());
         holder.getMensaje().setText(mensajeList.get(position).getMensaje());
         holder.getFecha().setText(mensajeList.get(position).getFecha());
+        if(mensajeList.get(position).getFotoPerfil().equalsIgnoreCase("")){
+            holder.getFotoPerfil().setImageResource(R.drawable.user);
+        }else{
+            Glide.with(context).load(mensajeList.get(position).getFotoPerfil()).into(holder.getFotoPerfil());
+        }
+        if ((mensajeList.get(position).getFotoMensaje().equalsIgnoreCase(""))){
+            holder.getFotoMensaje().setVisibility(View.GONE);
+        }else{
+            Glide.with(context).load(mensajeList.get(position).getFotoMensaje()).into(holder.getFotoMensaje());
+        }
+
     }
 
     @Override

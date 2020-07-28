@@ -14,7 +14,8 @@
         android:background="@color/md_purple_800"
         android:orientation="horizontal">
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_margin="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="10dp"
             android:id="@+id/fotoPerfil"
             android:layout_width="50sp"
             android:layout_height="50sp"
@@ -34,7 +35,7 @@
             android:textColor="@color/md_white_1000"
             android:textSize="40dp"></TextView>
 
-        <Button
+        <ImageButton
                 android:id="@+id/profileButton"
                 android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
@@ -44,7 +45,7 @@
                 android:hint="Perfil"
                 android:layout_margin="8dp"
                 android:textSize="25dp"
-                android:drawableLeft="@drawable/identity"
+                android:src="@drawable/personita"
                 app:maxImageSize="35dp" />
 
     </RelativeLayout>
@@ -74,9 +75,9 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="14dp"
                 android:hint="Escribe un mensaje"
-                android:textColor="@color/md_black_1000"
+                android:textColor="#E4FFFFFF"
                 android:textSize="25dp"
-                android:textColorHint="@color/md_white_1000_60"
+                android:textColorHint="@color/md_white_1000_25"
                 android:layout_weight="1">
                 >
             </EditText>

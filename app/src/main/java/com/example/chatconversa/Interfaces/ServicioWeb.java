@@ -42,7 +42,7 @@ public interface ServicioWeb {
     @Multipart
     @POST("send")
     Call<RespuestaWSSendMessage> send(@Header("Authorization") String token, @Part("user_id") RequestBody user_id,
-                                      @Part("username") RequestBody username, @Query("message") String message, @Query("image") MultipartBody.Part user_image, @Query("latitude") Double latitude, @Query("longitude") Double longitude);
+                                      @Part("username") RequestBody username, @Query("message") String message, @Part MultipartBody.Part user_image, @Query("latitude") Double latitude, @Query("longitude") Double longitude);
 
     @Multipart
     @POST("load/image")

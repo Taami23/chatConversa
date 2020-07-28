@@ -30,7 +30,7 @@
 
     </RelativeLayout>
     <ImageView
-        android:id="@+id/messages"
+        android:id="@+id/foto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
