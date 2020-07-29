@@ -6,17 +6,28 @@ public class Mensaje {
     private String fotoPerfil;
     private String fecha;
     private String fotoMensaje;
+    private String thumbnail;
 
     public Mensaje() {
 
     }
 
-    public Mensaje(String nombre, String mensaje, String fotoPerfil, String fecha, String fotoMensaje) {
+    public Mensaje(String nombre, String mensaje, String fotoPerfil, String fecha, String fotoMensaje, String thumbnail) {
         this.nombre = nombre;
         this.mensaje = mensaje;
         this.fotoPerfil = fotoPerfil;
         this.fecha = fecha;
         this.fotoMensaje = fotoMensaje;
+        this.thumbnail = thumbnail;
+
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public String getFotoMensaje() {
@@ -67,6 +78,7 @@ public class Mensaje {
                 ", fotoPerfil='" + fotoPerfil + '\'' +
                 ", fecha='" + fecha + '\'' +
                 ", fotoMensaje='" + fotoMensaje + '\'' +
+                ", thumbnail='" + thumbnail + '\'' +
                 '}';
     }
 }

@@ -2,7 +2,6 @@ package com.example.chatconversa;
 
 import android.content.Context;
 
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +54,7 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
         holder.getNombre().setText(mensajeList.get(position).getNombre());
         if(mensajeList.get(position).getMensaje() == null ){
             holder.getMensaje().setVisibility(View.GONE);
-        }else if (mensajeList.get(position).getMensaje().equalsIgnoreCase("")){
+        }else if (mensajeList.get(position).getMensaje().equalsIgnoreCase("") || mensajeList.get(position).getMensaje().equalsIgnoreCase("null")){
             holder.getMensaje().setVisibility(View.GONE);
         }else{
             holder.getMensaje().setText(mensajeList.get(position).getMensaje());
@@ -71,7 +70,7 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
         if ((mensajeList.get(position).getFotoMensaje().equalsIgnoreCase(""))){
             holder.getFotoMensaje().setVisibility(View.GONE);
         }else{
-            Glide.with(context).load(mensajeList.get(position).getFotoMensaje()).into(holder.getFotoMensaje());
+            Glide.with(context).load(mensajeList.get(position).getThumbnail()).into(holder.getFotoMensaje());
             Glide.with(context).load(mensajeList.get(position).getFotoMensaje()).into(holder.getImagen());
         }
 

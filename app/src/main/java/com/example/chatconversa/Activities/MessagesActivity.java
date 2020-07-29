@@ -17,6 +17,8 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,6 +50,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -234,7 +238,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                         Log.d("MENSAJITOS", respuestaWSMessages.toString());
                         Data[] datas = respuestaWSMessages.getData();
                         for (int i=datas.length-1; i>=0;i--){
-                                armador.addMensaje(new Mensaje(datas[i].getUser().getUsername(),datas[i].getMessage(), datas[i].getUser().getUser_image(), datas[i].getDate(), datas[i].getImage()));
+                                armador.addMensaje(new Mensaje(datas[i].getUser().getUsername(),datas[i].getMessage(), datas[i].getUser().getUser_image(), datas[i].getDate(), datas[i].getImage(), datas[i].getThumbnail()));
                         }
                     }else if (response.code()==400){
                         try{
@@ -411,40 +415,44 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         channel.bind("my-event", new SubscriptionEventListener() {
             @Override
             public void onEvent(PusherEvent event) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("PUSHER", "Nuevo mensaje: "+event.toString());
-                        NotificationCompat.Builder nBuilder = null;
-                        try {
-                            JSONObject object = new JSONObject(event.toString());
-                            Log.d("User", object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username")+ " usuario: "+ username);
-                            if(!object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username").equalsIgnoreCase(username)){
-                                nBuilder = new NotificationCompat.Builder(MessagesActivity.this,CHANNEL_ID)
-                                        .setContentIntent(pendingIntent)
-                                        .setSmallIcon(R.drawable.notification_icon)
-                                        .setContentTitle("Mensaje de: "+object.getJSONObject("data").getJSONObject("message")
-                                                .getJSONObject("user").getString("username"))
-                                        .setContentText(object.getJSONObject("data").getJSONObject("message").getString("message"))
-                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                        .setAutoCancel(true);
+                if(preferences.getString("token", null) != null){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d("PUSHER", "Nuevo mensaje: "+event.toString());
+                            NotificationCompat.Builder nBuilder = null;
+                            try {
+                                JSONObject object = new JSONObject(event.toString());
+                                Log.d("User", object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username")+ " usuario: "+ username);
+                                if(!object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username").equalsIgnoreCase(username)){
+                                    nBuilder = new NotificationCompat.Builder(MessagesActivity.this,CHANNEL_ID)
+                                            .setContentIntent(pendingIntent)
+                                            .setSmallIcon(R.drawable.notification_icon)
+                                            .setContentTitle("Mensaje de: "+object.getJSONObject("data").getJSONObject("message")
+                                                    .getJSONObject("user").getString("username"))
+                                            .setContentText(object.getJSONObject("data").getJSONObject("message").getString("message"))
+                                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                            .setAutoCancel(true);
+                                }
+
+                                armador.addMensaje(new Mensaje(object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username"),
+                                        object.getJSONObject("data").getJSONObject("message").getString("message"),
+                                        object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("user_image"),
+                                        object.getJSONObject("data").getJSONObject("message").getString("date"),
+                                        object.getJSONObject("data").getJSONObject("message").getString("image"),
+                                        object.getJSONObject("data").getJSONObject("message").getString("thumbnail")));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-
-                            armador.addMensaje(new Mensaje(object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username"),
-                                    object.getJSONObject("data").getJSONObject("message").getString("message"),
-                                    object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("user_image"),
-                                    object.getJSONObject("data").getJSONObject("message").getString("date"),
-                                    object.getJSONObject("data").getJSONObject("message").getString("image")));
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            if (nBuilder != null){
+                                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MessagesActivity.this);
+                                notificationManagerCompat.notify(5, nBuilder.build());
+                            }
                         }
-                        if (nBuilder != null){
-                            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MessagesActivity.this);
-                            notificationManagerCompat.notify(5, nBuilder.build());
-                        }
-                    }
-                });
+                    });
+                }
+
             }
         });
     }

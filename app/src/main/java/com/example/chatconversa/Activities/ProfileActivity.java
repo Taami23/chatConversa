@@ -120,7 +120,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
                                                         SharedPreferences.Editor editor = preferences.edit();
-                                                        editor.clear().apply();
+                                                        preferences.edit().remove("token");
+                                                        editor.clear();
+                                                        editor.commit();
                                                         initInicio();
                                                     }
                                                 })

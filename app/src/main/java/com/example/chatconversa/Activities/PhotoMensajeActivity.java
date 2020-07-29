@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +23,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -67,7 +72,7 @@ public class PhotoMensajeActivity extends AppCompatActivity {
     }
     public void servicioSend(){
         File archivoImagen = new File(pathPhoto);
-        Log.d("CACA", pathPhoto);
+        archivoImagen = saveBitmapToFile(archivoImagen);
         RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
         MultipartBody.Part file = MultipartBody.Part.createFormData("image", archivoImagen.getName(), imagen);
         Double latitude= 32.40;
@@ -153,5 +158,31 @@ public class PhotoMensajeActivity extends AppCompatActivity {
         Intent message = new Intent(this, MessagesActivity.class);
         startActivity(message);
         finish();
+    }
+
+    public File saveBitmapToFile(File file){
+        try {
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            o.inSampleSize = 6;
+            FileInputStream inputStream = new FileInputStream(file);
+            BitmapFactory.decodeStream(inputStream, null, o);
+            inputStream.close();
+            int REQUIRED_SIZE=75;
+            int scale = 1;
+            while(o.outWidth / scale / 2 >= REQUIRED_SIZE && o.outHeight / scale / 2 >= REQUIRED_SIZE) {
+                scale *= 2;
+            }
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            inputStream = new FileInputStream(file);
+            Bitmap selectedBitmap = BitmapFactory.decodeStream(inputStream, null, o2);
+            inputStream.close();
+            file.createNewFile(); FileOutputStream outputStream = new FileOutputStream(file);
+            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100 , outputStream);
+            return file;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

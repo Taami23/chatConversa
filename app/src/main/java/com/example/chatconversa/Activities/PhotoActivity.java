@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -35,6 +36,8 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,6 +63,7 @@ public class PhotoActivity extends AppCompatActivity {
     private String user_id;
     private String user_image;
 
+    private final static int IMAGE_MAX_SIZE = 100;
     private final static int REQUEST_PERMISSION = 1001;
     private final static int REQUEST_CAMERA = 1002;
     private final static String[] PERMISSION_REQUIRED =
@@ -113,6 +117,7 @@ public class PhotoActivity extends AppCompatActivity {
     private void subirImagen(){
 
         File archivoImagen = new File(pathPhoto);
+        archivoImagen = saveBitmapToFile(archivoImagen);
         RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
         MultipartBody.Part file = MultipartBody.Part.createFormData("user_image", archivoImagen.getName(), imagen);
         RequestBody user = RequestBody.create(MediaType.parse("multipart/form-data"),user_id);
@@ -281,6 +286,7 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     private File createFilePhoto() throws IOException {
+        Log.d("ENTRE", "CACA");
         String timestamp =  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String file_name = "JPEG_" + timestamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -307,4 +313,33 @@ public class PhotoActivity extends AppCompatActivity {
         startActivity(profile);
         finish();
     }
+
+
+    public File saveBitmapToFile(File file){
+        try {
+         BitmapFactory.Options o = new BitmapFactory.Options();
+         o.inJustDecodeBounds = true;
+         o.inSampleSize = 6;
+         FileInputStream inputStream = new FileInputStream(file);
+         BitmapFactory.decodeStream(inputStream, null, o);
+         inputStream.close();
+        int REQUIRED_SIZE=75;
+        int scale = 1;
+         while(o.outWidth / scale / 2 >= REQUIRED_SIZE && o.outHeight / scale / 2 >= REQUIRED_SIZE) {
+             scale *= 2;
+         }
+         BitmapFactory.Options o2 = new BitmapFactory.Options();
+         o2.inSampleSize = scale;
+         inputStream = new FileInputStream(file);
+         Bitmap selectedBitmap = BitmapFactory.decodeStream(inputStream, null, o2);
+         inputStream.close();
+        file.createNewFile(); FileOutputStream outputStream = new FileOutputStream(file);
+        selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100 , outputStream);
+        return file;
+    } catch (Exception e) {
+        return null;
+    }
+    }
+
+
 }
