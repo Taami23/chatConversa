@@ -23,12 +23,13 @@
             android:layout_gravity="center|bottom"
             android:gravity="center"
             android:paddingTop="40dp"
-            android:src="@drawable/logov2" />
+            android:src="@drawable/logov3" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ChatConversa"
             android:textSize="50dp"
+            android:layout_marginTop="9dp"
             android:textColor="@color/md_amber_50"
             android:layout_gravity="center"
             android:fontFamily="@font/yellow_rabbifontt"

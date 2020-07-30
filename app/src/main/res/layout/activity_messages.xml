@@ -17,9 +17,10 @@
             android:layout_marginTop="12dp"
             android:layout_marginLeft="10dp"
             android:id="@+id/atrasMensaje"
+
             android:layout_width="50sp"
             android:layout_height="50sp"
-            android:src="@mipmap/ic_launcher">
+            android:src="@drawable/logov3">
 
         </de.hdodenhof.circleimageview.CircleImageView>
 

@@ -427,7 +427,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                                 if(!object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username").equalsIgnoreCase(username)){
                                     nBuilder = new NotificationCompat.Builder(MessagesActivity.this,CHANNEL_ID)
                                             .setContentIntent(pendingIntent)
-                                            .setSmallIcon(R.drawable.notification_icon)
+                                            .setSmallIcon(R.drawable.ic_logov2_removebg)
                                             .setContentTitle("Mensaje de: "+object.getJSONObject("data").getJSONObject("message")
                                                     .getJSONObject("user").getString("username"))
                                             .setContentText(object.getJSONObject("data").getJSONObject("message").getString("message"))

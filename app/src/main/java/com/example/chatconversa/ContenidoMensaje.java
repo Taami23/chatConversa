@@ -41,8 +41,8 @@ public class ContenidoMensaje extends RecyclerView.ViewHolder {
         myDialog.setContentView(vistaFoto);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(myDialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         fotoMensaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

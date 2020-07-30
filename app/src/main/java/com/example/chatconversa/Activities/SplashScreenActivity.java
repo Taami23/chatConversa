@@ -27,9 +27,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         Animation animation1 = AnimationUtils.loadAnimation(this, R.anim.desplazamiento_arriba);
         Animation animation2 = AnimationUtils.loadAnimation(this, R.anim.desplazamiento_abajo);
         TextView texto = findViewById(R.id.textView);
+        TextView texto2 = findViewById(R.id.marcaRegistrada);
         ImageView imagen = findViewById(R.id.imageView);
         imagen.setAnimation(animation2);
         texto.setAnimation(animation1);
+        texto2.setAnimation(animation1);
 
         new Handler().postDelayed(new Runnable() {
             @Override
