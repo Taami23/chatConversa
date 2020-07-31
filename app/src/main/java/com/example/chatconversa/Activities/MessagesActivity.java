@@ -186,6 +186,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_CAMERA && resultCode == RESULT_OK){
             SharedPreferences.Editor edit = preferences.edit();
+            edit.putString("vengoDe", "camara");
             edit.putString("pathPhoto", pathPhoto);
             edit.commit();
             initPhotoMensaje();
@@ -419,7 +420,6 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.d("PUSHER", "Nuevo mensaje: "+event.toString());
                             NotificationCompat.Builder nBuilder = null;
                             try {
                                 JSONObject object = new JSONObject(event.toString());

@@ -2,10 +2,12 @@ package com.example.chatconversa.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.example.chatconversa.Interfaces.ServicioWeb;
 import com.example.chatconversa.R;
 import com.example.chatconversa.Respuestas.RespuestaWSSendMessage;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,6 +50,7 @@ public class PhotoMensajeActivity extends AppCompatActivity {
     private String user_id;
     private String username;
     private String pathPhoto;
+    private String vengoDe;
     private ServicioWeb servicioWeb;
 
     @Override
@@ -59,6 +63,9 @@ public class PhotoMensajeActivity extends AppCompatActivity {
         mensaje = findViewById(R.id.textMessage);
         enviar = findViewById(R.id.sendMessage);
         Glide.with(this).load(pathPhoto).into(imagen);
+        if (vengoDe.equalsIgnoreCase("camara")){
+            imagen.setRotation(90);
+        }
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/message/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         servicioWeb = retrofit.create(ServicioWeb.class);
@@ -130,12 +137,47 @@ public class PhotoMensajeActivity extends AppCompatActivity {
                             }catch (JSONException | IOException e){
                                 e.printStackTrace();
                             }
+                        }else if (response.code()==503){
+                            JSONObject jObjError = null;
+                            try {
+                                jObjError = new JSONObject(response.errorBody().string());
+                                String mensaje = jObjError.getString("message");
+                                Log.d("Retroit Error", mensaje);
+                                new MaterialAlertDialogBuilder(PhotoMensajeActivity.this)
+                                        .setTitle("Error")
+                                        .setMessage("Servicio no disponible")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener(){
+
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                initMessage();
+                                            }
+                                        }).show();
+                            } catch (JSONException  | IOException e) {
+                                e.printStackTrace();
+                            }
+
+
                         }
                     }
                 }
 
                 @Override
                 public void onFailure(Call<RespuestaWSSendMessage> call, Throwable t) {
+                    new MaterialAlertDialogBuilder(PhotoMensajeActivity.this)
+                        .setTitle("Error")
+                        .setMessage("Tiempo de espera excedido")
+                            .setCancelable(false)
+                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener(){
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                initMessage();
+                            }
+                        }).show();
+
+
                     Log.d("Failure", t.getMessage());
                 }
             });
@@ -152,6 +194,7 @@ public class PhotoMensajeActivity extends AppCompatActivity {
         Log.d("TOKEN", username);
         pathPhoto = preferences.getString("pathPhoto", "Ruta no encontrada");
         Log.d("TOKEN", "memori"+pathPhoto);
+        vengoDe = preferences.getString("vengoDe", "Nooo, no vengo");
     }
 
     private void initMessage(){
@@ -177,9 +220,13 @@ public class PhotoMensajeActivity extends AppCompatActivity {
             o2.inSampleSize = scale;
             inputStream = new FileInputStream(file);
             Bitmap selectedBitmap = BitmapFactory.decodeStream(inputStream, null, o2);
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap rotado = Bitmap.createBitmap(selectedBitmap, 0,0,selectedBitmap.getWidth(), selectedBitmap.getHeight(), matrix, true);
             inputStream.close();
-            file.createNewFile(); FileOutputStream outputStream = new FileOutputStream(file);
-            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100 , outputStream);
+            file.createNewFile();
+            FileOutputStream outputStream = new FileOutputStream(file);
+            rotado.compress(Bitmap.CompressFormat.JPEG, 100 , outputStream);
             return file;
         } catch (Exception e) {
             return null;

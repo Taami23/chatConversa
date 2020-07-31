@@ -178,7 +178,18 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                         }catch (JSONException | IOException e){
                             e.printStackTrace();
                         }
+                    }else if (response.code() == 503){
+                        new MaterialAlertDialogBuilder(LoginActivity.this)
+                                .setTitle("Error")
+                                .setMessage("Servicio no disponible")
+                                .setCancelable(false)
+                                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener(){
 
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                            initLogin();
+                                    }
+                                }).show();
                     }
                 }
             }
@@ -245,6 +256,12 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     private void initMessages(){
         Intent messages = new Intent(this, MessagesActivity.class);
         startActivity(messages);
+        finish();
+    }
+
+    private void initLogin(){
+        Intent login = new Intent(this, LoginActivity.class);
+        startActivity(login);
         finish();
     }
 
