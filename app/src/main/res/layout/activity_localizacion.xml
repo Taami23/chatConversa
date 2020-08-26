@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#2A2A2B"
+android:orientation="vertical"
+tools:context=".Activities.LocalizacionActivity">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/md_purple_800"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="102dp"
+        android:layout_toRightOf="@+id/atrasMensaje"
+        android:fontFamily="@font/my_fonts"
+        android:text="IMAGEN"
+        android:textColor="@color/md_white_1000"
+        android:textSize="40dp"></TextView>
+
+
+</RelativeLayout>
+    <com.google.android.gms.maps.MapView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:id="@+id/mapa"
+        android:layout_weight="1"
+        >
+    </com.google.android.gms.maps.MapView>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="350dp"
+        android:id="@+id/layout"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fondolayout"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/textMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="14dp"
+            android:hint="Escribe un mensaje"
+            android:textColor="@color/md_black_1000"
+            android:textSize="25dp"
+            android:textColorHint="@color/md_white_1000_60"
+            android:layout_weight="1">
+            >
+        </EditText>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/sendMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_send_white"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="24dp"
+        android:layout_toRightOf="@+id/layout"
+        >
+    </ImageButton>
+
+</RelativeLayout>
+
+</LinearLayout>

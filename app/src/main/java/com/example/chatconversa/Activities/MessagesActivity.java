@@ -70,6 +70,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MessagesActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageButton profile;
     private ImageButton insertarFoto;
+    private ImageButton insertarUbicacion;
     private ImageButton send;
     private EditText mensaje;
     private ServicioWeb servicioWeb;
@@ -96,6 +97,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = new Intent(this, MessagesActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(MessagesActivity.this, 0, intent, 0);
         insertarFoto = findViewById(R.id.insertarFoto);
+        insertarUbicacion = findViewById(R.id.insertarUbicacion);
         profile = findViewById(R.id.profileButton);
         profile.setOnClickListener(this);
         mensaje = findViewById(R.id.textMessage);
@@ -116,6 +118,12 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         servicioWeb = retrofit.create(ServicioWeb.class);
         servicio();
         notifications(options, pendingIntent);
+        insertarUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initLocalizacion();
+            }
+        });
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -460,6 +468,11 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
     private void initPhotoMensaje(){
         Intent photoMensaje = new Intent(this, PhotoMensajeActivity.class);
         startActivity(photoMensaje);
+        finish();
+    }
+    private void initLocalizacion(){
+        Intent localizacion = new Intent(this, LocalizacionActivity.class);
+        startActivity(localizacion);
         finish();
     }
 }
