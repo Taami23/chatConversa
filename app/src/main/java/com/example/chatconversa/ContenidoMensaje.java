@@ -2,6 +2,8 @@ package com.example.chatconversa;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +15,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.chatconversa.Activities.MessagesActivity;
+import com.example.chatconversa.Activities.RegistrarActivity;
+import com.example.chatconversa.Activities.muestraMapaActivity;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ContenidoMensaje extends RecyclerView.ViewHolder {
+public class ContenidoMensaje extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     private TextView nombre, mensaje, fecha, usuario, fechaFoto;
+    private ImageButton fotoMapa;
+    private Double latitud, longitud;
     private CircleImageView fotoPerfil;
     private ImageView imagen;
     private ImageButton fotoMensaje;
     private Context context;
+    private MessagesActivity mensajes;
     public ContenidoMensaje(@NonNull View itemView, Context context) {
         super(itemView);
         this.context = context;
@@ -31,13 +40,14 @@ public class ContenidoMensaje extends RecyclerView.ViewHolder {
         fecha = itemView.findViewById(R.id.fecha);
         fotoPerfil = itemView.findViewById(R.id.atrasMensaje);
         fotoMensaje = itemView.findViewById(R.id.fotoMensaje);
-
         usuario = vistaFoto.findViewById(R.id.nombreUsuario);
         fechaFoto = vistaFoto.findViewById(R.id.fecha);
         imagen = vistaFoto.findViewById(R.id.Imangencita);
+        fotoMapa = itemView.findViewById(R.id.mapaMensaje);
+        mensajes = new MessagesActivity();
+//        mensajes = itemView;
         Dialog myDialog = new Dialog(context);
         ImageButton atras = vistaFoto.findViewById(R.id.atrasMensaje);
-        Log.d("Click", "Holi");
         myDialog.setContentView(vistaFoto);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(myDialog.getWindow().getAttributes());
@@ -57,8 +67,21 @@ public class ContenidoMensaje extends RecyclerView.ViewHolder {
 
             }
         });
+        fotoMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=47.6,-122.3(Treasure)");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                context.startActivity(mapIntent);
+            }
+        });
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
     public ImageButton getFotoMensaje() {
         return fotoMensaje;
     }
@@ -85,6 +108,14 @@ public class ContenidoMensaje extends RecyclerView.ViewHolder {
 
     public TextView getFecha() {
         return fecha;
+    }
+
+    public ImageButton getFotoMapa() {
+        return fotoMapa;
+    }
+
+    public void setFotoMapa(ImageButton fotoMapa) {
+        this.fotoMapa = fotoMapa;
     }
 
     public void setFecha(TextView fecha) {
@@ -130,4 +161,22 @@ public class ContenidoMensaje extends RecyclerView.ViewHolder {
     public void setImagen(ImageView imagen) {
         this.imagen = imagen;
     }
+
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
+    }
+
+
 }

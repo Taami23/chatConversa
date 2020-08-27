@@ -247,7 +247,8 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                         Log.d("MENSAJITOS", respuestaWSMessages.toString());
                         Data[] datas = respuestaWSMessages.getData();
                         for (int i=datas.length-1; i>=0;i--){
-                                armador.addMensaje(new Mensaje(datas[i].getUser().getUsername(),datas[i].getMessage(), datas[i].getUser().getUser_image(), datas[i].getDate(), datas[i].getImage(), datas[i].getThumbnail()));
+                                armador.addMensaje(new Mensaje(datas[i].getUser().getUsername(),datas[i].getMessage(), datas[i].getUser().getUser_image(),
+                                        datas[i].getDate(), datas[i].getImage(), datas[i].getThumbnail(), datas[i].getLatitude(), datas[i].getLongitude()));
                         }
                     }else if (response.code()==400){
                         try{
@@ -305,13 +306,11 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         File archivoImage = new File(pathPhoto);
         //RequestBody file = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImage);
         //MultipartBody.Part archivo = MultipartBody.Part.create(file);
-        Double latitude= 32.40;
-        Double longitude= 33.40;
         MultipartBody.Part file = null;
         RequestBody user = RequestBody.create(MediaType.parse("multipart/form-data"), user_id);
         RequestBody user_name = RequestBody.create(MediaType.parse("multipart/form-data"), username);
         if(!mensaje.getText().toString().equalsIgnoreCase("") || file != null ){
-            final Call<RespuestaWSSendMessage> respuestaWSSendMessageCall= servicioWeb.send("Bearer "+token, user, user_name,mensaje.getText().toString(),file,latitude, longitude);
+            final Call<RespuestaWSSendMessage> respuestaWSSendMessageCall= servicioWeb.send("Bearer "+token, user, user_name,mensaje.getText().toString(),file, null, null   );
             respuestaWSSendMessageCall.enqueue(new Callback<RespuestaWSSendMessage>() {
                 @Override
                 public void onResponse(Call<RespuestaWSSendMessage> call, Response<RespuestaWSSendMessage> response) {
@@ -319,6 +318,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                     if(response != null){
                         Log.d("CODIGO", ""+response.code());
                         if(response.body() != null && response.code()== 200){
+                            Log.d("MAPA2", response.body().toString());
                             Log.d("EXITO", "Mensaje enviado con exito");
                         }else if (response.code()==400){
                             try{
@@ -442,13 +442,21 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
                                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                                             .setAutoCancel(true);
                                 }
-
+                                    String lat = null;
+                                    String lon = null;
+                                    if (!object.getJSONObject("data").getJSONObject("message").getString("longitude").equalsIgnoreCase("null")){
+                                        Log.d("SOY NULO", "MENTIRA" + object.getJSONObject("data").getJSONObject("message").getString("message"));
+                                        lat = object.getJSONObject("data").getJSONObject("message").getString("latitude");
+                                        lon = object.getJSONObject("data").getJSONObject("message").getString("longitude");
+                                    }
                                 armador.addMensaje(new Mensaje(object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username"),
                                         object.getJSONObject("data").getJSONObject("message").getString("message"),
                                         object.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("user_image"),
                                         object.getJSONObject("data").getJSONObject("message").getString("date"),
                                         object.getJSONObject("data").getJSONObject("message").getString("image"),
-                                        object.getJSONObject("data").getJSONObject("message").getString("thumbnail")));
+                                        object.getJSONObject("data").getJSONObject("message").getString("thumbnail"),
+                                        lat,
+                                        lon));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -473,6 +481,12 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
     private void initLocalizacion(){
         Intent localizacion = new Intent(this, LocalizacionActivity.class);
         startActivity(localizacion);
+        finish();
+    }
+
+    public void initMuestraMapa(){
+        Intent muestraMapa = new Intent(this, muestraMapaActivity.class);
+        startActivity(muestraMapa);
         finish();
     }
 }

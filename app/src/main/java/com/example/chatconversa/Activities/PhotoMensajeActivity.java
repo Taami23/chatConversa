@@ -82,12 +82,10 @@ public class PhotoMensajeActivity extends AppCompatActivity {
         archivoImagen = saveBitmapToFile(archivoImagen);
         RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
         MultipartBody.Part file = MultipartBody.Part.createFormData("image", archivoImagen.getName(), imagen);
-        Double latitude= 32.40;
-        Double longitude= 33.40;
         RequestBody user = RequestBody.create(MediaType.parse("multipart/form-data"), user_id);
         RequestBody user_name = RequestBody.create(MediaType.parse("multipart/form-data"), username);
         if(!mensaje.getText().toString().equalsIgnoreCase("") || file != null ){
-            final Call<RespuestaWSSendMessage> respuestaWSSendMessageCall= servicioWeb.send("Bearer "+token, user, user_name,mensaje.getText().toString(),file,latitude, longitude);
+            final Call<RespuestaWSSendMessage> respuestaWSSendMessageCall= servicioWeb.send("Bearer "+token, user, user_name,mensaje.getText().toString(),file,null, null);
             respuestaWSSendMessageCall.enqueue(new Callback<RespuestaWSSendMessage>() {
                 @Override
                 public void onResponse(Call<RespuestaWSSendMessage> call, Response<RespuestaWSSendMessage> response) {
