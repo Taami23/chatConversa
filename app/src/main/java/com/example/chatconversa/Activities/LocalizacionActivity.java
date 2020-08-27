@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 
 import com.example.chatconversa.Interfaces.ServicioWeb;
@@ -65,6 +66,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     //Botones
     private Button actual;
     private Button marcador;
+    private ImageButton atras;
     //Variables Globales
     private double lat;
     private double lon;
@@ -101,6 +103,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
         //Botones
         actual = findViewById(R.id.actual);
         marcador = findViewById(R.id.marcador);
+        atras = findViewById(R.id.atras);
         //preferencias
         getPreferences();
 
@@ -109,6 +112,12 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
         mapView.getMapAsync(this);
         mFusedLocationProvider = LocationServices.getFusedLocationProviderClient(this);
 
+        atras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initMensajes();
+            }
+        });
         actual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,6 +182,12 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
                     })
                     .show();
         }
+    }
+
+    private void initMensajes(){
+        Intent mensajes = new Intent(this, MessagesActivity.class);
+        startActivity(mensajes);
+        finish();
     }
 
     private void initializeTrackingLocation() {

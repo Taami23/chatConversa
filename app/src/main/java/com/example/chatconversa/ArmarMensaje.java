@@ -68,17 +68,15 @@ public class ArmarMensaje extends RecyclerView.Adapter<ContenidoMensaje>{
         }else{
             Glide.with(context).load(mensajeList.get(position).getFotoPerfil()).into(holder.getFotoPerfil());
         }
-//        Log.d("MAPA3", mensajeList.get(position).getLatitud());
-//        Log.d("MAPA3", mensajeList.get(position).getLongitud());
         if ((mensajeList.get(position).getFotoMensaje().equalsIgnoreCase(""))){
-            Log.d("MAPANULL", mensajeList.get(position).toString());
             holder.getFotoMensaje().setVisibility(View.GONE);
         }else{
             Glide.with(context).load(mensajeList.get(position).getThumbnail()).into(holder.getFotoMensaje());
             Glide.with(context).load(mensajeList.get(position).getFotoMensaje()).into(holder.getImagen());
         }
         if (mensajeList.get(position).getLatitud()!=null && mensajeList.get(position).getLongitud()!=null){
-            Log.d("MAPA", mensajeList.get(position).toString());
+            holder.setLatitud(mensajeList.get(position).getLatitud());
+            holder.setLongitud(mensajeList.get(position).getLongitud());
             Glide.with(context).load(R.drawable.iconmap).into(holder.getFotoMapa());
         }else{
             holder.getFotoMapa().setVisibility(View.GONE);

@@ -49,6 +49,7 @@ public class PhotoMensajeActivity extends AppCompatActivity {
     private String token;
     private String user_id;
     private String username;
+    private ImageButton atras;
     private String pathPhoto;
     private String vengoDe;
     private ServicioWeb servicioWeb;
@@ -62,6 +63,8 @@ public class PhotoMensajeActivity extends AppCompatActivity {
         imagen = findViewById(R.id.foto);
         mensaje = findViewById(R.id.textMessage);
         enviar = findViewById(R.id.sendMessage);
+        atras = findViewById(R.id.atras);
+
         Glide.with(this).load(pathPhoto).into(imagen);
         if (vengoDe.equalsIgnoreCase("camara")){
             imagen.setRotation(90);
@@ -69,6 +72,12 @@ public class PhotoMensajeActivity extends AppCompatActivity {
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://chat-conversa.unnamed-chile.com/ws/message/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         servicioWeb = retrofit.create(ServicioWeb.class);
+        atras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initMensajes();
+            }
+        });
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -229,5 +238,11 @@ public class PhotoMensajeActivity extends AppCompatActivity {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private void initMensajes(){
+        Intent mensajes = new Intent(this, MessagesActivity.class);
+        startActivity(mensajes);
+        finish();
     }
 }

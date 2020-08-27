@@ -17,8 +17,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,8 +48,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -118,6 +114,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         servicioWeb = retrofit.create(ServicioWeb.class);
         servicio();
         notifications(options, pendingIntent);
+
         insertarUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -473,6 +470,7 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
+
     private void initPhotoMensaje(){
         Intent photoMensaje = new Intent(this, PhotoMensajeActivity.class);
         startActivity(photoMensaje);
@@ -481,12 +479,6 @@ public class MessagesActivity extends AppCompatActivity implements View.OnClickL
     private void initLocalizacion(){
         Intent localizacion = new Intent(this, LocalizacionActivity.class);
         startActivity(localizacion);
-        finish();
-    }
-
-    public void initMuestraMapa(){
-        Intent muestraMapa = new Intent(this, muestraMapaActivity.class);
-        startActivity(muestraMapa);
         finish();
     }
 }

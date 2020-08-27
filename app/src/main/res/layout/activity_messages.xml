@@ -36,104 +36,109 @@
             android:textSize="40dp"></TextView>
 
         <ImageButton
-                android:id="@+id/profileButton"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColorHint="@color/md_white_1000"
-                android:layout_centerVertical="true"
-                android:hint="Perfil"
-                android:layout_margin="8dp"
-                android:textSize="25dp"
-                android:src="@drawable/personita"
-                app:maxImageSize="35dp" />
+            android:id="@+id/profileButton"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/md_white_1000"
+            android:layout_centerVertical="true"
+            android:hint="Perfil"
+            android:layout_margin="8dp"
+            android:textSize="25dp"
+            android:src="@drawable/personita"
+            app:maxImageSize="35dp" />
 
     </RelativeLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/messages"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
 
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="350dp"
-            android:id="@+id/layout"
-            android:layout_height="wrap_content"
-            android:background="@drawable/fondolayout"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="bottom"
-            android:orientation="horizontal">
-            <EditText
-                android:id="@+id/textMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="14dp"
-                android:hint="Escribe un mensaje"
-                android:textColor="#E4FFFFFF"
-                android:textSize="25dp"
-                android:textColorHint="@color/md_white_1000_25"
-                android:layout_weight="1">
-                >
-            </EditText>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/messages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginBottom="75dp"
+            android:padding="5sp">
 
 
-        </LinearLayout>
+        </androidx.recyclerview.widget.RecyclerView>
 
-        <ImageButton
-            android:id="@+id/sendMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_send_white"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="4dp"
-            android:layout_toRightOf="@+id/layout"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="20dp"
-            >
-        </ImageButton>
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:id="@+id/menu"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_gravity="bottom|right"
+            android:layout_gravity="bottom"
             android:layout_marginRight="50dp"
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="12dp"
             app:fab_addButtonColorNormal="@color/md_purple_800"
             app:fab_addButtonColorPressed="@color/md_text_white"
             app:fab_addButtonPlusIconColor="@color/md_text_white"
             app:fab_addButtonSize="mini"
-            android:elevation="10dp"
-            app:fab_labelsPosition="left">
+            android:elevation="10dp">
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/insertarFoto"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:fab_colorNormal="@color/md_purple_800"
-                app:fab_colorPressed="@color/md_purple_800"
                 app:fab_size="mini"
-                app:fab_icon="@drawable/ic_add"
-                app:fab_title="foto"
-                ></com.getbase.floatingactionbutton.FloatingActionButton>
+                app:fab_icon="@drawable/ic_baseline_camera_alt_24"/>
+
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/insertarUbicacion"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:fab_colorNormal="@color/md_purple_800"
-                app:fab_colorPressed="@color/md_purple_800"
                 app:fab_size="mini"
-                app:fab_icon="@drawable/ic_add"
-                app:fab_title="foto"
-                ></com.getbase.floatingactionbutton.FloatingActionButton>
+                app:fab_icon="@drawable/ic_baseline_location_on_24"
+                />
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
-
-    </FrameLayout>
+        <LinearLayout
+            android:id="@+id/barra"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="350dp"
+                    android:id="@+id/layout"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/fondolayout"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="bottom"
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/textMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="14dp"
+                        android:hint="Escribe un mensaje"
+                        android:textColor="#E4FFFFFF"
+                        android:textSize="25dp"
+                        android:textColorHint="@color/md_white_1000_25"
+                        android:layout_weight="1">
+                    </EditText>
+                </LinearLayout>
+                <ImageButton
+                    android:id="@+id/sendMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_send_white"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toRightOf="@+id/layout"
+                    android:layout_gravity="bottom|right">
+                </ImageButton>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

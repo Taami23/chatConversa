@@ -2,9 +2,9 @@ package com.example.chatconversa;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,8 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatconversa.Activities.MessagesActivity;
-import com.example.chatconversa.Activities.RegistrarActivity;
-import com.example.chatconversa.Activities.muestraMapaActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -25,7 +24,7 @@ public class ContenidoMensaje extends RecyclerView.ViewHolder implements View.On
 
     private TextView nombre, mensaje, fecha, usuario, fechaFoto;
     private ImageButton fotoMapa;
-    private Double latitud, longitud;
+    private String latitud, longitud;
     private CircleImageView fotoPerfil;
     private ImageView imagen;
     private ImageButton fotoMensaje;
@@ -45,7 +44,6 @@ public class ContenidoMensaje extends RecyclerView.ViewHolder implements View.On
         imagen = vistaFoto.findViewById(R.id.Imangencita);
         fotoMapa = itemView.findViewById(R.id.mapaMensaje);
         mensajes = new MessagesActivity();
-//        mensajes = itemView;
         Dialog myDialog = new Dialog(context);
         ImageButton atras = vistaFoto.findViewById(R.id.atrasMensaje);
         myDialog.setContentView(vistaFoto);
@@ -70,10 +68,24 @@ public class ContenidoMensaje extends RecyclerView.ViewHolder implements View.On
         fotoMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                Uri gmmIntentUri = Uri.parse("geo:0,0?q=47.6,-122.3(Treasure)");
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                context.startActivity(mapIntent);
+                if(getLongitud()==null && getLatitud()==null){
+                    new MaterialAlertDialogBuilder(context)
+                            .setTitle("Upps!")
+                            .setMessage("No se pudo obtener su ubicación")
+                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .show();
+                    return;
+                }else {
+                    String geo = "geo:0,0?q="+getLatitud()+","+getLongitud();
+                    Uri gmmIntentUri = Uri.parse(geo);
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    context.startActivity(mapIntent);
+                }
             }
         });
     }
@@ -162,19 +174,19 @@ public class ContenidoMensaje extends RecyclerView.ViewHolder implements View.On
         this.imagen = imagen;
     }
 
-    public Double getLatitud() {
+    public String getLatitud() {
         return latitud;
     }
 
-    public void setLatitud(Double latitud) {
+    public void setLatitud(String latitud) {
         this.latitud = latitud;
     }
 
-    public Double getLongitud() {
+    public String getLongitud() {
         return longitud;
     }
 
-    public void setLongitud(Double longitud) {
+    public void setLongitud(String longitud) {
         this.longitud = longitud;
     }
 
